@@ -1,0 +1,39 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(cargo:*)",
+      "Bash(git:*)",
+      "Bash(gh:*)",
+      "Bash(rustup:*)",
+      "Bash(shellcheck:*)",
+      "Bash(python3:*)",
+      "Bash(jq:*)",
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(hyperfine:*)",
+      "Bash(scripts/*)",
+      "Bash(benches/*)",
+      "Bash(demos/*)",
+      "Bash(.claude/hooks/*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/results-guard.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

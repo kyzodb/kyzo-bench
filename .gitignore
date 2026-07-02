@@ -1,0 +1,10 @@
+# Datasets are fetched, never committed (see datasets/README.md)
+datasets/*
+!datasets/README.md
+
+# Build and run artifacts
+target/
+node_modules/
+__pycache__/
+.venv/
+*.log
