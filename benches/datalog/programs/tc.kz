@@ -1,0 +1,5 @@
+# Transitive closure — KyzoScript. Same semantics as tc.dl.
+# `edge` is a stored relation of arity 2, loaded by the rig before timing.
+tc[x, y] := *edge[x, y]
+tc[x, y] := tc[x, z], *edge[z, y]
+?[x, y] := tc[x, y]

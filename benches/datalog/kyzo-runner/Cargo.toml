@@ -1,0 +1,13 @@
+[package]
+name = "kyzo-runner"
+description = "kyzo#22: the KyzoDB subject — loads facts, runs a KyzoScript program, writes the answer. Same pipeline shape as the Souffle invocation, timed externally by the rig."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+# The engine under test, linked read-only from the sibling checkout
+# (kyzodb/kyzo). A clean clone of kyzo-bench needs that sibling; the rig
+# records the exact engine commit in every result.
+kyzo = { path = "../../../../kyzo/kyzo-core" }

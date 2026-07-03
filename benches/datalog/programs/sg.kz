@@ -1,0 +1,4 @@
+# Same-generation — KyzoScript. Same semantics as sg.dl.
+sg[x, y] := *parent[x, p], *parent[y, p], x != y
+sg[x, y] := *parent[x, xp], sg[xp, yp], *parent[y, yp]
+?[x, y] := sg[x, y]

@@ -1,0 +1,169 @@
+{
+  "bench": "datalog",
+  "story": "kyzo#22",
+  "subject": {
+    "kind": "opponent",
+    "name": "souffle-compiled",
+    "version": "2.5",
+    "provenance": {
+      "kind": "built_from_source",
+      "repo": "https://github.com/souffle-lang/souffle",
+      "reference": "2.5",
+      "script": "opponents/souffle/build.sh"
+    }
+  },
+  "rig": {
+    "commit": "a30314c5915cb0bd3de230178b3f84f88be1a381",
+    "dirty": true
+  },
+  "workload": {
+    "id": "pointsto/v3k-a2k-s6k",
+    "description": "Andersen points-to, 3k vars, 2k addr-of, 6k assigns, 2k loads, 2k stores",
+    "seed": 22301,
+    "correctness_sha256": "8f55fc8de8ea99bbe80748b6b88402d2ce4b4d656dafb288118e11a837511048"
+  },
+  "datasets": [
+    {
+      "name": "addr_of.facts",
+      "sha256": "e2c31810dde5596e04dc2e6ab6d058edff6a1901f05262befb80a5a6be909162",
+      "bytes": 18528
+    },
+    {
+      "name": "assign.facts",
+      "sha256": "3b9e8b9f0c020db971fdecd8f29130de2716706761b3680d23a0c18612ec1e5b",
+      "bytes": 55606
+    },
+    {
+      "name": "load.facts",
+      "sha256": "c398634d64f3dc3b02edeb8f4d038d0642e73dde9423b096d005577820f0e8dd",
+      "bytes": 18486
+    },
+    {
+      "name": "store.facts",
+      "sha256": "1d1b3bbc7268c00788f2313dfe80bb481ba4632cb8afad1b79762f9624d12394",
+      "bytes": 18575
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 7448117,
+        "peak_rss_kib": 101936,
+        "output_sha256": "9f6ed5caf297046fbf7f82b83812330bfea0249280813af678fb9a33cefa06e9",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 7448341,
+        "peak_rss_kib": 102024,
+        "output_sha256": "9f6ed5caf297046fbf7f82b83812330bfea0249280813af678fb9a33cefa06e9",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 7512759,
+        "peak_rss_kib": 102052,
+        "output_sha256": "9f6ed5caf297046fbf7f82b83812330bfea0249280813af678fb9a33cefa06e9",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 7501282,
+        "peak_rss_kib": 102020,
+        "output_sha256": "9f6ed5caf297046fbf7f82b83812330bfea0249280813af678fb9a33cefa06e9",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/pointsto_v3k-a2k-s6k/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 7551774,
+        "peak_rss_kib": 102076,
+        "output_sha256": "9f6ed5caf297046fbf7f82b83812330bfea0249280813af678fb9a33cefa06e9",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-03",
+  "notes": "Souffle 2.5 built from its release tag (opponents/souffle/build.sh); compiled mode: synthesized once with `souffle -o` (untimed setup, Souffle's documented deployment flow), measured runs execute the binary, -j 32. Answer rows: 4056774."
+}

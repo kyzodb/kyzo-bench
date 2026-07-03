@@ -1,0 +1,6 @@
+# Andersen-style points-to — KyzoScript. Same semantics as pointsto.dl.
+pt[y, x] := *addr_of[y, x]
+pt[y, x] := *assign[y, z], pt[z, x]
+pt[y, w] := *load[y, x], pt[x, z], pt[z, w]
+pt[z, w] := *store[y, x], pt[y, z], pt[x, w]
+?[y, x] := pt[y, x]

@@ -1,0 +1,10 @@
+// Transitive closure — the canonical recursive Datalog workload.
+// Souffle dialect. Semantically identical programs for every subject live
+// beside this file; the rig checks all subjects produce the same answer set.
+.decl edge(x:number, y:number)
+.decl tc(x:number, y:number)
+.input edge
+.output tc
+
+tc(x, y) :- edge(x, y).
+tc(x, y) :- tc(x, z), edge(z, y).

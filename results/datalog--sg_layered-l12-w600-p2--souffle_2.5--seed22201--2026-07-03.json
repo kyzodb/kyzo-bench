@@ -1,0 +1,159 @@
+{
+  "bench": "datalog",
+  "story": "kyzo#22",
+  "subject": {
+    "kind": "opponent",
+    "name": "souffle",
+    "version": "2.5",
+    "provenance": {
+      "kind": "built_from_source",
+      "repo": "https://github.com/souffle-lang/souffle",
+      "reference": "2.5",
+      "script": "opponents/souffle/build.sh"
+    }
+  },
+  "rig": {
+    "commit": "a30314c5915cb0bd3de230178b3f84f88be1a381",
+    "dirty": true
+  },
+  "workload": {
+    "id": "sg/layered-l12-w600-p2",
+    "description": "same-generation, 12 generations of 600, 2 parents each",
+    "seed": 22201,
+    "correctness_sha256": "dc12eb4401016b69d637d6e015c77a460454eb33e13cdadc6d7edc7950f9a4e3"
+  },
+  "datasets": [
+    {
+      "name": "parent.facts",
+      "sha256": "7c053f81a52b985ebca06cd9c1ec54e8cbd8ae82c83efd20001b48c78b27a447",
+      "bytes": 128986
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/souffle/dist/bin/souffle",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/out",
+          "-j",
+          "32",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.dl"
+        ],
+        "wall_micros": 403994,
+        "peak_rss_kib": 77276,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/souffle/dist/bin/souffle",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/out",
+          "-j",
+          "32",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.dl"
+        ],
+        "wall_micros": 404569,
+        "peak_rss_kib": 77232,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/souffle/dist/bin/souffle",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/out",
+          "-j",
+          "32",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.dl"
+        ],
+        "wall_micros": 400782,
+        "peak_rss_kib": 77572,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/souffle/dist/bin/souffle",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/out",
+          "-j",
+          "32",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.dl"
+        ],
+        "wall_micros": 404249,
+        "peak_rss_kib": 77512,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/souffle/dist/bin/souffle",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/souffle/out",
+          "-j",
+          "32",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.dl"
+        ],
+        "wall_micros": 398912,
+        "peak_rss_kib": 77176,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-03",
+  "notes": "Souffle 2.5 built from its release tag (opponents/souffle/build.sh); interpreted mode, -j 32. Answer rows: 2690060."
+}

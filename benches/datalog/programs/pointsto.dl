@@ -1,0 +1,18 @@
+// Context-insensitive (Andersen-style) points-to analysis.
+// Souffle dialect. The four input relations model the four statement forms:
+//   addr_of(y, x):  y = &x
+//   assign(y, x):   y = x
+//   load(y, x):     y = *x
+//   store(y, x):   *y = x
+.decl addr_of(y:number, x:number)
+.decl assign(y:number, x:number)
+.decl load(y:number, x:number)
+.decl store(y:number, x:number)
+.decl pt(y:number, x:number)
+.input addr_of, assign, load, store
+.output pt
+
+pt(y, x) :- addr_of(y, x).
+pt(y, x) :- assign(y, z), pt(z, x).
+pt(y, w) :- load(y, x), pt(x, z), pt(z, w).
+pt(z, w) :- store(y, x), pt(y, z), pt(x, w).

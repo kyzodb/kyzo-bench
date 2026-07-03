@@ -1,0 +1,154 @@
+{
+  "bench": "datalog",
+  "story": "kyzo#22",
+  "subject": {
+    "kind": "opponent",
+    "name": "souffle-compiled",
+    "version": "2.5",
+    "provenance": {
+      "kind": "built_from_source",
+      "repo": "https://github.com/souffle-lang/souffle",
+      "reference": "2.5",
+      "script": "opponents/souffle/build.sh"
+    }
+  },
+  "rig": {
+    "commit": "a30314c5915cb0bd3de230178b3f84f88be1a381",
+    "dirty": true
+  },
+  "workload": {
+    "id": "tc/snap-wiki-Vote",
+    "description": "transitive closure, SNAP wiki-Vote (7.1k nodes, 103.7k edges, real)",
+    "seed": 22401,
+    "correctness_sha256": "7a70f3bd183f4153c31485058fe4dcf887a3d37fa85d120e8764d3aeb7296da1"
+  },
+  "datasets": [
+    {
+      "name": "edge.facts",
+      "sha256": "92cfd4c6c845980c560255b063ebbab6d3f85fad738e6332b16e828a295c5860",
+      "bytes": 991089
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 1778101,
+        "peak_rss_kib": 274836,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 1754990,
+        "peak_rss_kib": 274328,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 1745058,
+        "peak_rss_kib": 273928,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 1779467,
+        "peak_rss_kib": 274476,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/synthesized",
+          "-F",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/facts",
+          "-D",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/souffle-compiled/out",
+          "-j",
+          "32"
+        ],
+        "wall_micros": 1718532,
+        "peak_rss_kib": 274380,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-03",
+  "notes": "Souffle 2.5 built from its release tag (opponents/souffle/build.sh); compiled mode: synthesized once with `souffle -o` (untimed setup, Souffle's documented deployment flow), measured runs execute the binary, -j 32. Answer rows: 11947132."
+}

@@ -8,3 +8,13 @@ node_modules/
 __pycache__/
 .venv/
 *.log
+
+# Opponent engines are built/fetched by their pinned build scripts,
+# never committed; only the scripts (and the hashes inside them) are.
+opponents/*/src/
+opponents/*/dist/
+opponents/*/*.tar.gz
+
+# SHA-256 receipts of fetched datasets are runtime artifacts; the pins
+# live in the fetch scripts.
+*.sha256

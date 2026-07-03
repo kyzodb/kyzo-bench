@@ -1,0 +1,9 @@
+// Same-generation — the classic non-linear recursion workload.
+// Souffle dialect.
+.decl parent(c:number, p:number)
+.decl sg(x:number, y:number)
+.input parent
+.output sg
+
+sg(x, y) :- parent(x, p), parent(y, p), x != y.
+sg(x, y) :- parent(x, xp), sg(xp, yp), parent(y, yp).
