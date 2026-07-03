@@ -22,3 +22,7 @@ opponents/*/*.tar.gz
 # SHA-256 receipts of fetched datasets are runtime artifacts; the pins
 # live in the fetch scripts.
 *.sha256
+
+# Regenerable build scratch (CSV exports, opponent database files) that
+# doesn't live under target/ for this bench.
+benches/graph-algorithms/.scratch/

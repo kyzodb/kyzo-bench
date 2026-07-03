@@ -1,0 +1,64 @@
+{
+  "bench": "graph-algorithms",
+  "story": "kyzo#23",
+  "subject": {
+    "kind": "opponent",
+    "name": "kuzu",
+    "version": "0.11.3",
+    "provenance": {
+      "kind": "package",
+      "ecosystem": "pip",
+      "package": "kuzu",
+      "version": "0.11.3"
+    }
+  },
+  "dataset": {
+    "name": "graphalytics/wiki-Talk",
+    "archive_sha256": "a575c04743a3511b917a7d1cbd9357b79c04b5262b3d6241ac38ca4d82e3ca60",
+    "directed": true,
+    "vertices": 2394385,
+    "edges": 5021410
+  },
+  "scope_note": "Kuzu 0.11.3 `algo` extension runs PR and WCC natively; BFS, CDLP, LCC, SSSP are not in the extension and are excluded from this baseline rather than approximated through hand-written Cypher. Timing is processing-only per Graphalytics practice: the CALL is forced to completion inside the engine by aggregating over every output row (sum + count returning one row); client-side row marshaling is outside the clock, and the full output is fetched untimed afterwards for the reference check. Load time reported separately. Single process; memory capped through Kuzu's own buffer_pool_size knob at 12884901888 bytes (RLIMIT_AS would refuse Kuzu's documented 8 TiB virtual-space buffer manager design).",
+  "parameters": {
+    "pr_damping": 0.85,
+    "pr_iterations": 10,
+    "wcc": "default"
+  },
+  "load_seconds": 0.5667740190401673,
+  "timings": {
+    "pr": {
+      "median_s": 1.1701683069113642,
+      "min_s": 1.0980904838070273,
+      "max_s": 1.2413044788409024,
+      "runs": 5
+    },
+    "wcc": {
+      "median_s": 0.20766013697721064,
+      "min_s": 0.19874520995654166,
+      "max_s": 0.2182179808150977,
+      "runs": 5
+    }
+  },
+  "correctness": {
+    "pr_max_relative_error_vs_ldbc_reference": 0.8327609913999894,
+    "pr_rank_sum": 0.16810418991303538,
+    "pr_reference_rank_sum": 1.0000000000103022,
+    "pr_semantics_note": "Kuzu 0.11.3's native page_rank does not redistribute dangling-vertex rank (rank sum decays below 1.0), while the Graphalytics PR specification does. Its PR timing is therefore recorded as Kuzu's own PR variant, NOT as a Graphalytics-comparable number; WCC is spec-comparable.",
+    "wcc_partition_matches_ldbc_reference": true
+  },
+  "peak_rss_kib": 2379964,
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "rig": {
+    "commit": "a30314c5915cb0bd3de230178b3f84f88be1a381",
+    "dirty": true
+  },
+  "date_utc": "2026-07-03",
+  "command": "benches/graph-algorithms/kuzu_baseline.py --dataset wiki-Talk --runs 5"
+}
