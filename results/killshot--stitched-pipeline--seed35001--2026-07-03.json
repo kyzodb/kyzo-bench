@@ -1,0 +1,108 @@
+{
+  "demo": "consistency-kill-shot",
+  "side": "stitched-pipeline",
+  "story": "kyzo#35",
+  "date_utc": "2026-07-03",
+  "command": "driver.py --seed 35001 --reads 2000 --out /tmp/killshot-witness.json",
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "stores": {
+    "postgres": "16.13",
+    "qdrant": "1.18.0",
+    "elasticsearch": "9.2.4",
+    "neo4j": "5.26.28-community"
+  },
+  "seed": 35001,
+  "docs": 20,
+  "reads": 2000,
+  "writes_completed": 296,
+  "anomalies": 81,
+  "anomaly_rate": 0.0405,
+  "first_witnesses": [
+    {
+      "doc_id": 18,
+      "pg_version": 2,
+      "qdrant_version": 2,
+      "es_version": 2,
+      "neo4j_version": 1,
+      "at_unix": 1783057169.5437167
+    },
+    {
+      "doc_id": 3,
+      "pg_version": 2,
+      "qdrant_version": 2,
+      "es_version": 2,
+      "neo4j_version": 1,
+      "at_unix": 1783057169.728568
+    },
+    {
+      "doc_id": 14,
+      "pg_version": 2,
+      "qdrant_version": 2,
+      "es_version": 2,
+      "neo4j_version": 1,
+      "at_unix": 1783057169.7595084
+    },
+    {
+      "doc_id": 18,
+      "pg_version": 3,
+      "qdrant_version": 3,
+      "es_version": 3,
+      "neo4j_version": 2,
+      "at_unix": 1783057169.8275328
+    },
+    {
+      "doc_id": 4,
+      "pg_version": 3,
+      "qdrant_version": 3,
+      "es_version": 3,
+      "neo4j_version": 2,
+      "at_unix": 1783057170.1729012
+    },
+    {
+      "doc_id": 8,
+      "pg_version": 3,
+      "qdrant_version": 3,
+      "es_version": 3,
+      "neo4j_version": 2,
+      "at_unix": 1783057170.2888124
+    },
+    {
+      "doc_id": 7,
+      "pg_version": 3,
+      "qdrant_version": 3,
+      "es_version": 3,
+      "neo4j_version": 2,
+      "at_unix": 1783057170.3805387
+    },
+    {
+      "doc_id": 7,
+      "pg_version": 3,
+      "qdrant_version": 3,
+      "es_version": 3,
+      "neo4j_version": 2,
+      "at_unix": 1783057170.3846521
+    },
+    {
+      "doc_id": 10,
+      "pg_version": 6,
+      "qdrant_version": 6,
+      "es_version": 6,
+      "neo4j_version": 5,
+      "at_unix": 1783057170.5219033
+    },
+    {
+      "doc_id": 2,
+      "pg_version": 5,
+      "qdrant_version": 5,
+      "es_version": 5,
+      "neo4j_version": 4,
+      "at_unix": 1783057170.7399585
+    }
+  ]
+}
