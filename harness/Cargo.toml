@@ -1,0 +1,13 @@
+[package]
+name = "kyzo-bench-harness"
+description = "The shared measurement kernel for kyzo-bench: a result that cannot exist without its methodology."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
