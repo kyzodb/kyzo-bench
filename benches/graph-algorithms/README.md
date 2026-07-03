@@ -39,4 +39,7 @@ rig — external process, same datasets, same reference check.
 
     ./benches/graph-algorithms/fetch-datasets.sh
     python -m venv benches/graph-algorithms/.venv && benches/graph-algorithms/.venv/bin/python -m pip install -r benches/graph-algorithms/requirements.txt
-    benches/graph-algorithms/.venv/bin/python benches/graph-algorithms/kuzu_baseline.py --dataset wiki-Talk --runs 5
+    benches/graph-algorithms/.venv/bin/python benches/graph-algorithms/kuzu_baseline.py --dataset wiki-Talk --runs 5 [--land]
+
+Prints the envelope (`harness/envelope.py`) to stdout; `--land` writes it into `results/` instead,
+refusing to overwrite a committed file.

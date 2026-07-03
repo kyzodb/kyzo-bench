@@ -76,10 +76,13 @@ KyzoDB: running; the curve lands in `results/` and here when it completes.
 
     ./fetch-datasets.sh                       # SIFT1M, hash-verified
     /usr/bin/python -m venv .venv && .venv/bin/python -m pip install -r requirements.txt
-    .venv/bin/python ann_baseline.py --subject hnswlib     > ../../results/...
-    .venv/bin/python ann_baseline.py --subject faiss-hnsw  > ../../results/...
-    .venv/bin/python ann_baseline.py --subject faiss-flat  > ../../results/...
+    .venv/bin/python ann_baseline.py --subject hnswlib     --land
+    .venv/bin/python ann_baseline.py --subject faiss-hnsw  --land
+    .venv/bin/python ann_baseline.py --subject faiss-flat  --land
     .venv/bin/python export-flat.py           # HDF5 -> flat binary for the Rust runner
     cargo build --release -p kyzo-vector-runner
     ../../target/release/kyzo-vector-runner --flat ../../datasets/vector/flat \
         --store /tmp/kyzo-vec --runs 3
+
+Each subject prints the envelope (`harness/envelope.py`) to stdout; `--land` writes it into
+`results/` instead, refusing to overwrite a committed file.

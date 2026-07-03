@@ -12,61 +12,23 @@ would not be the configuration Kuzu's maintainers would sign off on.
 Timing follows Graphalytics practice: processing time only (the CALL),
 load time reported separately. Memory is capped in-process via RLIMIT_AS.
 
-Usage: kuzu_baseline.py --dataset wiki-Talk [--runs 5]
+Usage: kuzu_baseline.py --dataset wiki-Talk [--runs 5] [--land]
 """
 
 from __future__ import annotations
 
 import argparse
-import json
-import os
 import resource
 import sys
 import time
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "harness"))
+import envelope  # noqa: E402  (path must be set up first)
+
 MEM_CAP_BYTES = 12 * 1024**3
 KUZU_PIN = "0.11.3"
-
-
-def hardware() -> dict[str, object]:
-    cpu = "unknown"
-    mem_kib = 0
-    with open("/proc/cpuinfo") as f:
-        for line in f:
-            if line.startswith("model name"):
-                cpu = line.split(":", 1)[1].strip()
-                break
-    with open("/proc/meminfo") as f:
-        for line in f:
-            if line.startswith("MemTotal:"):
-                mem_kib = int(line.split()[1])
-                break
-    return {
-        "cpu_model": cpu,
-        "logical_cpus": os.cpu_count(),
-        "mem_total_kib": mem_kib,
-        "arch": os.uname().machine,
-        "kernel": os.uname().release,
-    }
-
-
-def rig_commit() -> dict[str, object]:
-    import subprocess
-
-    here = Path(__file__).resolve().parent
-    try:
-        commit = subprocess.run(
-            ["git", "-C", str(here), "rev-parse", "HEAD"],
-            capture_output=True, text=True, check=True,
-        ).stdout.strip()
-        dirty = bool(subprocess.run(
-            ["git", "-C", str(here), "status", "--porcelain"],
-            capture_output=True, text=True, check=True,
-        ).stdout.strip())
-        return {"commit": commit, "dirty": dirty}
-    except Exception:
-        return {"commit": "unknown", "dirty": True}
 
 
 def read_properties(path: Path) -> dict[str, str]:
@@ -97,6 +59,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--runs", type=int, default=5)
+    ap.add_argument("--land", action="store_true")
     args = ap.parse_args()
 
     # Kuzu's buffer manager mmaps ~8 TiB of virtual address space by design,
@@ -225,15 +188,7 @@ def main() -> int:
             "runs": len(s),
         }
 
-    result = {
-        "bench": "graph-algorithms",
-        "story": "kyzo#23",
-        "subject": {
-            "kind": "opponent",
-            "name": "kuzu",
-            "version": KUZU_PIN,
-            "provenance": {"kind": "package", "ecosystem": "pip", "package": "kuzu", "version": KUZU_PIN},
-        },
+    metrics = {
         "dataset": {
             "name": f"graphalytics/{args.dataset}",
             "archive_sha256": archive_hash,
@@ -272,12 +227,25 @@ def main() -> int:
             "wcc_partition_matches_ldbc_reference": wcc_match,
         },
         "peak_rss_kib": peak_rss_kib,
-        "hardware": hardware(),
-        "rig": rig_commit(),
-        "date_utc": time.strftime("%Y-%m-%d", time.gmtime()),
-        "command": " ".join(sys.argv),
     }
-    print(json.dumps(result, indent=2))
+    env = envelope.build(
+        bench="graph-algorithms",
+        story="kyzo#23",
+        subject={
+            "kind": "opponent",
+            "name": "kuzu",
+            "version": KUZU_PIN,
+            "provenance": {"kind": "package", "ecosystem": "pip", "package": "kuzu", "version": KUZU_PIN},
+        },
+        metrics=metrics,
+        repo_root=REPO_ROOT,
+    )
+    envelope.emit(
+        env,
+        land_it=args.land,
+        results_dir=REPO_ROOT / "results",
+        id_=args.dataset,
+    )
     return 0
 
 

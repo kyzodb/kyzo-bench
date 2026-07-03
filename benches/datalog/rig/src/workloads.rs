@@ -5,7 +5,7 @@
 //! reading this file at the commit a result names.
 
 use crate::generate;
-use kyzo_bench_harness::{Seed, Workload};
+use kyzo_bench_harness::Seed;
 use std::path::Path;
 
 /// One benchmark workload: a program plus a deterministically generated
@@ -107,10 +107,6 @@ pub fn suite() -> Vec<Registered> {
 }
 
 impl Registered {
-    pub fn find(id: &str) -> Option<Registered> {
-        suite().into_iter().find(|w| w.id == id)
-    }
-
     /// The Souffle program file for this workload, relative to
     /// `benches/datalog/programs/`.
     pub fn souffle_program(&self) -> &'static str {
@@ -191,16 +187,6 @@ impl Registered {
         Ok(())
     }
 
-    /// The harness-level workload identity (canonical hash filled in after
-    /// the first verified run).
-    pub fn as_workload(&self, correctness_sha256: Option<String>) -> Workload {
-        Workload {
-            id: self.id.to_owned(),
-            description: self.description.to_owned(),
-            seed: self.seed,
-            correctness_sha256,
-        }
-    }
 }
 
 #[cfg(test)]
@@ -208,22 +194,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn suite_ids_are_unique_and_findable() {
+    fn suite_ids_are_unique() {
         let s = suite();
         let mut ids: Vec<&str> = s.iter().map(|w| w.id).collect();
         ids.sort_unstable();
         ids.dedup();
         assert_eq!(ids.len(), s.len(), "duplicate workload id");
-        for w in &s {
-            assert!(Registered::find(w.id).is_some());
-        }
     }
 
     #[test]
     fn generation_lands_expected_files() {
         let dir = std::env::temp_dir().join(format!("kb-wl-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
-        let w = Registered::find("pointsto/v3k-a2k-s6k").unwrap();
+        let w = suite()
+            .into_iter()
+            .find(|w| w.id == "pointsto/v3k-a2k-s6k")
+            .unwrap();
         w.generate(&dir, Path::new(".")).unwrap();
         for f in ["addr_of.facts", "assign.facts", "load.facts", "store.facts"] {
             assert!(dir.join(f).exists(), "missing {f}");

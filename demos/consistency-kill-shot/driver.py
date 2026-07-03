@@ -30,6 +30,11 @@ import sys
 import threading
 import time
 from dataclasses import dataclass, asdict
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "harness"))
+import envelope  # noqa: E402  (path must be set up first)
 
 
 DOCS = 20  # small on purpose: contention is the subject being demonstrated
@@ -215,6 +220,7 @@ def main() -> int:
     ap.add_argument("--seed", type=int, required=True)
     ap.add_argument("--reads", type=int, default=2000)
     ap.add_argument("--out", type=str, default=None, help="witness JSON file")
+    ap.add_argument("--land", action="store_true")
     args = ap.parse_args()
 
     pipeline = Pipeline()
@@ -256,60 +262,8 @@ def main() -> int:
     t.join(timeout=30)
     pipeline.close()
 
-    def hardware() -> dict[str, object]:
-        cpu = "unknown"
-        mem_kib = 0
-        with open("/proc/cpuinfo") as f:
-            for line in f:
-                if line.startswith("model name"):
-                    cpu = line.split(":", 1)[1].strip()
-                    break
-        with open("/proc/meminfo") as f:
-            for line in f:
-                if line.startswith("MemTotal:"):
-                    mem_kib = int(line.split()[1])
-                    break
-        import os
-
-        return {
-            "cpu_model": cpu,
-            "logical_cpus": os.cpu_count(),
-            "mem_total_kib": mem_kib,
-            "arch": os.uname().machine,
-            "kernel": os.uname().release,
-        }
-
-    def rig_commit() -> dict[str, object]:
-        import subprocess
-
-        here = os.path.dirname(os.path.abspath(__file__))
-        try:
-            commit = subprocess.run(
-                ["git", "-C", here, "rev-parse", "HEAD"],
-                capture_output=True, text=True, check=True,
-            ).stdout.strip()
-            dirty = bool(subprocess.run(
-                ["git", "-C", here, "status", "--porcelain"],
-                capture_output=True, text=True, check=True,
-            ).stdout.strip())
-            return {"commit": commit, "dirty": dirty}
-        except Exception:
-            return {"commit": "unknown", "dirty": True}
-
-    result = {
-        "demo": "consistency-kill-shot",
+    metrics = {
         "side": "stitched-pipeline",
-        "story": "kyzo#35",
-        "date_utc": time.strftime("%Y-%m-%d", time.gmtime()),
-        "command": " ".join(sys.argv),
-        "hardware": hardware(),
-        "rig": rig_commit(),
-        "stores": {
-            "postgres": "16.13",
-            "qdrant": "1.18.0",
-            "elasticsearch": "9.2.4",
-            "neo4j": "5.26.28-community",
-        },
         "seed": args.seed,
         "docs": DOCS,
         "reads": len(answers),
@@ -318,11 +272,35 @@ def main() -> int:
         "anomaly_rate": len(anomalies) / len(answers) if answers else 0.0,
         "first_witnesses": [asdict(a) for a in anomalies[:10]],
     }
-    text = json.dumps(result, indent=2)
-    print(text)
+    env = envelope.build(
+        bench="killshot",
+        story="kyzo#35",
+        subject={
+            "kind": "opponent",
+            "name": "stitched-pipeline",
+            "version": "n/a",
+            "provenance": {
+                "kind": "composite",
+                "stores": {
+                    "postgres": "16.13",
+                    "qdrant": "1.18.0",
+                    "elasticsearch": "9.2.4",
+                    "neo4j": "5.26.28-community",
+                },
+            },
+        },
+        metrics=metrics,
+        repo_root=REPO_ROOT,
+    )
     if args.out:
-        with open(args.out, "w") as f:
-            f.write(text + "\n")
+        Path(args.out).write_text(json.dumps(env, indent=2) + "\n")
+    envelope.emit(
+        env,
+        land_it=args.land,
+        results_dir=REPO_ROOT / "results",
+        id_="stitched-pipeline",
+        seed=args.seed,
+    )
     # Exit 0 either way: the number is the result. The README interprets it.
     return 0
 

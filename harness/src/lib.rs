@@ -14,17 +14,20 @@
 pub mod canon;
 pub mod dataset;
 pub mod hardware;
+pub mod opponents;
 pub mod record;
+pub mod rig;
 pub mod run;
 pub mod seed;
 pub mod subject;
 pub mod workload;
 
-pub use canon::{CanonicalAnswer, canonical_answer};
+pub use canon::{CanonicalAnswer, canonical_answer, raw_answer};
 pub use dataset::DatasetDigest;
 pub use hardware::Hardware;
 pub use record::{LandError, ResultRecord};
+pub use rig::{AnswerSpec, HashKind, Phase, PreparedSubject, Rig, RigError};
 pub use run::{CapPolicy, Measurement, RunError, RunSet, Runner};
 pub use seed::{Seed, SplitMix64};
-pub use subject::{EngineCommit, Opponent, Provenance, Subject};
+pub use subject::{EngineCommit, EngineLocateError, Opponent, Provenance, Subject, locate_kyzo};
 pub use workload::Workload;

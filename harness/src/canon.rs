@@ -40,6 +40,27 @@ pub fn canonical_answer(output_file: &Path) -> std::io::Result<CanonicalAnswer> 
     })
 }
 
+/// A raw, order-preserving answer identity: SHA-256 over the concatenated
+/// bytes of `paths`, in order, each followed by an `\x1e` separator, plus
+/// the total newline count as a row estimate. Unlike [`canonical_answer`],
+/// order and duplicates are part of the answer — for workloads (like OLTP's
+/// per-op-index read log) where a subject that reorders or drops a
+/// duplicate has answered a different question, not an equivalent one.
+pub fn raw_answer(paths: &[&Path]) -> std::io::Result<(String, usize)> {
+    let mut hasher = Sha256::new();
+    let mut rows = 0usize;
+    for p in paths {
+        let bytes = std::fs::read(p)?;
+        rows += bytes.iter().filter(|b| **b == b'\n').count();
+        hasher.update(&bytes);
+        hasher.update(b"\x1e");
+    }
+    Ok((
+        hasher.finalize().iter().map(|b| format!("{b:02x}")).collect(),
+        rows,
+    ))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -84,6 +105,32 @@ mod tests {
             canonical_answer(&a).unwrap().sha256,
             canonical_answer(&b).unwrap().sha256
         );
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn raw_answer_is_order_and_duplicate_sensitive() {
+        let dir = std::env::temp_dir().join(format!("kb-raw-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let a = dir.join("a.tsv");
+        let b = dir.join("b.tsv");
+        std::fs::File::create(&a)
+            .unwrap()
+            .write_all(b"1\n2\n")
+            .unwrap();
+        std::fs::File::create(&b)
+            .unwrap()
+            .write_all(b"2\n1\n")
+            .unwrap();
+        let (ha, rows_a) = raw_answer(&[&a]).unwrap();
+        let (hb, _) = raw_answer(&[&b]).unwrap();
+        assert_ne!(ha, hb, "raw_answer must be order-sensitive, unlike canonical_answer");
+        assert_eq!(rows_a, 2);
+
+        // Concatenating two files in order is part of the identity too.
+        let (h_ab, _) = raw_answer(&[&a, &b]).unwrap();
+        let (h_ba, _) = raw_answer(&[&b, &a]).unwrap();
+        assert_ne!(h_ab, h_ba, "file order must be part of the raw answer");
         std::fs::remove_dir_all(&dir).unwrap();
     }
 }

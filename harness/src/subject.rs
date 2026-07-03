@@ -46,6 +46,47 @@ impl EngineCommit {
         let dirty = !git(&["status", "--porcelain"])?.is_empty();
         Some(EngineCommit { commit, dirty })
     }
+
+    /// The prose fragment every rig's notes append when the engine tree was
+    /// dirty at capture time — one implementation instead of a copy-pasted
+    /// `if commit.dirty { ... } else { "" }` per rig.
+    pub fn dirty_suffix(&self) -> &'static str {
+        if self.dirty {
+            " (DIRTY TREE — not publishable)"
+        } else {
+            ""
+        }
+    }
+}
+
+/// Failure locating the KyzoDB engine sibling checkout or its built runner
+/// binary — the one lookup every `kyzo`-subject rig arm needs.
+#[derive(Debug, thiserror::Error)]
+pub enum EngineLocateError {
+    #[error("engine repo not found as sibling ../kyzo (or `git rev-parse` failed there)")]
+    EngineNotFound,
+    #[error("{0} not built: run `cargo build --release -p {1}`")]
+    RunnerNotBuilt(std::path::PathBuf, &'static str),
+}
+
+/// Locate the `kyzo` engine sibling checkout, capture its commit, and
+/// verify `target/release/<runner_binary>` exists — exactly the "kyzo" arm
+/// every `prepare_subject` used to hand-roll, once.
+pub fn locate_kyzo(
+    root: &std::path::Path,
+    runner_binary: &'static str,
+) -> Result<(EngineCommit, std::path::PathBuf), EngineLocateError> {
+    let engine_repo = root
+        .parent()
+        .map(|p| p.join("kyzo"))
+        .filter(|p| p.is_dir())
+        .ok_or(EngineLocateError::EngineNotFound)?;
+    let commit = EngineCommit::capture(&engine_repo).ok_or(EngineLocateError::EngineNotFound)?;
+    let bin = root.join("target/release").join(runner_binary);
+    if !bin.is_file() {
+        return Err(EngineLocateError::RunnerNotBuilt(bin, runner_binary));
+    }
+    Ok((commit, bin))
 }
 
 /// An opponent engine, pinned. `provenance` records how the exact artifact

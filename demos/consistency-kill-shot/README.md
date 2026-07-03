@@ -36,12 +36,14 @@ no misconfigured refresh intervals, no dropped writes, separate connections per 
 
 ## Run it
 
-    ./run.sh [seed] [reads]        # defaults: seed 35001, 2000 reads
+    ./run.sh [seed] [reads] [--land]   # defaults: seed 35001, 2000 reads
 
-Brings the pipeline up with `docker compose up --wait`, runs the seeded workload, prints a witness
-JSON (anomaly count, rate, and the first ten witnesses with the exact version quadruples), tears
-everything down. One measured run on the rig hardware (32-core, seed 35001, 2000 reads, 296
-concurrent writes): **81 anomalies, 4.05%** — see `results/killshot--stitched-pipeline--*.json`.
+Brings the pipeline up with `docker compose up --wait`, runs the seeded workload, prints the
+envelope (`harness/envelope.py`: anomaly count, rate, and the first ten witnesses with the exact
+version quadruples) to stdout and to a local `witness-*.json`, tears everything down. `--land`
+additionally writes the envelope into `results/`, refusing to overwrite a committed file. One
+measured run on the rig hardware (32-core, seed 35001, 2000 reads, 296 concurrent writes): **81
+anomalies, 4.05%** — see `results/killshot--stitched-pipeline--*.json`.
 
 The anomaly *count* varies with scheduling — it is a race being made visible; the seeded workload
 is deterministic, the interleaving is the operating system's. What is reproducible from a clean

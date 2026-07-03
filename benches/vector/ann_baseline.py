@@ -20,16 +20,14 @@ Method, ann-benchmarks practice throughout:
 - each efSearch point runs the full 10k-query set 3 times; QPS is the
   median pass, recall is identical across passes (deterministic search).
 
-Usage: ann_baseline.py --subject hnswlib|faiss-hnsw|faiss-flat [--runs 3]
+Usage: ann_baseline.py --subject hnswlib|faiss-hnsw|faiss-flat [--runs 3] [--land]
 """
 
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import resource
-import subprocess
 import sys
 import time
 from pathlib import Path
@@ -37,50 +35,16 @@ from pathlib import Path
 import h5py
 import numpy as np
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT / "harness"))
+import envelope  # noqa: E402  (path must be set up first)
+
 MEM_CAP_BYTES = 12 * 1024**3
 K = 10
 EF_SWEEP = [10, 20, 40, 80, 120, 200, 400, 800]
 M = 16
 EF_CONSTRUCTION = 200
 PINS = {"hnswlib": "0.8.0", "faiss-cpu": "1.14.3"}
-
-
-def hardware() -> dict[str, object]:
-    cpu = "unknown"
-    mem_kib = 0
-    with open("/proc/cpuinfo") as f:
-        for line in f:
-            if line.startswith("model name"):
-                cpu = line.split(":", 1)[1].strip()
-                break
-    with open("/proc/meminfo") as f:
-        for line in f:
-            if line.startswith("MemTotal:"):
-                mem_kib = int(line.split()[1])
-                break
-    return {
-        "cpu_model": cpu,
-        "logical_cpus": os.cpu_count(),
-        "mem_total_kib": mem_kib,
-        "arch": os.uname().machine,
-        "kernel": os.uname().release,
-    }
-
-
-def rig_commit() -> dict[str, object]:
-    here = Path(__file__).resolve().parent
-    try:
-        commit = subprocess.run(
-            ["git", "-C", str(here), "rev-parse", "HEAD"],
-            capture_output=True, text=True, check=True,
-        ).stdout.strip()
-        dirty = bool(subprocess.run(
-            ["git", "-C", str(here), "status", "--porcelain"],
-            capture_output=True, text=True, check=True,
-        ).stdout.strip())
-        return {"commit": commit, "dirty": dirty}
-    except Exception:
-        return {"commit": "unknown", "dirty": True}
 
 
 def recall_at_k(found: np.ndarray, truth: np.ndarray) -> float:
@@ -95,6 +59,7 @@ def main() -> int:
     ap.add_argument("--subject", required=True,
                     choices=["hnswlib", "faiss-hnsw", "faiss-flat"])
     ap.add_argument("--runs", type=int, default=3)
+    ap.add_argument("--land", action="store_true")
     args = ap.parse_args()
 
     resource.setrlimit(resource.RLIMIT_AS, (MEM_CAP_BYTES, MEM_CAP_BYTES))
@@ -185,16 +150,7 @@ def main() -> int:
 
     peak_rss_kib = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
 
-    result = {
-        "bench": "vector",
-        "story": "kyzo#25",
-        "subject": {
-            "kind": "opponent",
-            "name": args.subject,
-            "version": version,
-            "provenance": {"kind": "package", "ecosystem": "pip",
-                           "package": package, "version": version},
-        },
+    metrics = {
         "dataset": {
             "name": "ann-benchmarks/sift-128-euclidean",
             "sha256": dataset_sha,
@@ -218,12 +174,26 @@ def main() -> int:
         "query_threads": 1,
         "curve": curve,
         "peak_rss_kib": peak_rss_kib,
-        "hardware": hardware(),
-        "rig": rig_commit(),
-        "date_utc": time.strftime("%Y-%m-%d", time.gmtime()),
-        "command": " ".join(sys.argv),
     }
-    print(json.dumps(result, indent=2))
+    env = envelope.build(
+        bench="vector",
+        story="kyzo#25",
+        subject={
+            "kind": "opponent",
+            "name": args.subject,
+            "version": version,
+            "provenance": {"kind": "package", "ecosystem": "pip",
+                           "package": package, "version": version},
+        },
+        metrics=metrics,
+        repo_root=REPO_ROOT,
+    )
+    envelope.emit(
+        env,
+        land_it=args.land,
+        results_dir=REPO_ROOT / "results",
+        id_="sift1m",
+    )
     return 0
 
 
