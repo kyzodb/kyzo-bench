@@ -1,0 +1,88 @@
+{
+  "bench": "vector",
+  "story": "kyzo#25",
+  "subject": {
+    "kind": "opponent",
+    "name": "hnswlib",
+    "version": "0.8.0",
+    "provenance": {
+      "kind": "package",
+      "ecosystem": "pip",
+      "package": "hnswlib",
+      "version": "0.8.0"
+    }
+  },
+  "dataset": {
+    "name": "ann-benchmarks/sift-128-euclidean",
+    "sha256": "dd6f0a6ed6b7ebb8934680f861a33ed01ff33991eaee4fd60914d854a0ca5984",
+    "base_vectors": 1000000,
+    "dim": 128,
+    "queries": 10000,
+    "metric": "euclidean"
+  },
+  "scope_note": "ann-benchmarks method: recall@10 vs single-threaded QPS against the dataset's exact ground truth. Build uses the library's default threading and is reported separately, outside the query clock. Each sweep point is the median of 3 full 10k-query passes. Memory capped via RLIMIT_AS at 12884901888 bytes. Embedded-library class \u2014 a future server-class comparison (Qdrant/LanceDB) is a separate record.",
+  "config": {
+    "index": "hnsw",
+    "M": 16,
+    "ef_construction": 200
+  },
+  "build_seconds": 33.39844774408266,
+  "build_threading": "library default (32 cores available)",
+  "query_threads": 1,
+  "curve": [
+    {
+      "ef_search": 10,
+      "recall_at_10": 0.70804,
+      "qps": 43648.46808574408
+    },
+    {
+      "ef_search": 20,
+      "recall_at_10": 0.83887,
+      "qps": 27840.07349659057
+    },
+    {
+      "ef_search": 40,
+      "recall_at_10": 0.92693,
+      "qps": 17264.20955736409
+    },
+    {
+      "ef_search": 80,
+      "recall_at_10": 0.97425,
+      "qps": 9820.922019015257
+    },
+    {
+      "ef_search": 120,
+      "recall_at_10": 0.98779,
+      "qps": 4369.859383358754
+    },
+    {
+      "ef_search": 200,
+      "recall_at_10": 0.99562,
+      "qps": 4452.235220875378
+    },
+    {
+      "ef_search": 400,
+      "recall_at_10": 0.99862,
+      "qps": 2447.1200441146893
+    },
+    {
+      "ef_search": 800,
+      "recall_at_10": 0.99933,
+      "qps": 1326.3888186500956
+    }
+  ],
+  "peak_rss_kib": 1367748,
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "rig": {
+    "commit": "a30314c5915cb0bd3de230178b3f84f88be1a381",
+    "dirty": true
+  },
+  "date_utc": "2026-07-03",
+  "command": "benches/vector/ann_baseline.py --subject hnswlib --runs 3"
+}

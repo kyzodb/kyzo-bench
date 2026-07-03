@@ -1,0 +1,88 @@
+{
+  "bench": "vector",
+  "story": "kyzo#25",
+  "subject": {
+    "kind": "opponent",
+    "name": "faiss-hnsw",
+    "version": "1.14.3",
+    "provenance": {
+      "kind": "package",
+      "ecosystem": "pip",
+      "package": "faiss-cpu",
+      "version": "1.14.3"
+    }
+  },
+  "dataset": {
+    "name": "ann-benchmarks/sift-128-euclidean",
+    "sha256": "dd6f0a6ed6b7ebb8934680f861a33ed01ff33991eaee4fd60914d854a0ca5984",
+    "base_vectors": 1000000,
+    "dim": 128,
+    "queries": 10000,
+    "metric": "euclidean"
+  },
+  "scope_note": "ann-benchmarks method: recall@10 vs single-threaded QPS against the dataset's exact ground truth. Build uses the library's default threading and is reported separately, outside the query clock. Each sweep point is the median of 3 full 10k-query passes. Memory capped via RLIMIT_AS at 12884901888 bytes. Embedded-library class \u2014 a future server-class comparison (Qdrant/LanceDB) is a separate record.",
+  "config": {
+    "index": "IndexHNSWFlat",
+    "M": 16,
+    "ef_construction": 200
+  },
+  "build_seconds": 34.30767904617824,
+  "build_threading": "library default (32 cores available)",
+  "query_threads": 1,
+  "curve": [
+    {
+      "recall_at_10": 0.72139,
+      "qps": 24839.64888933476,
+      "ef_search": 10
+    },
+    {
+      "recall_at_10": 0.84886,
+      "qps": 15289.566856426469,
+      "ef_search": 20
+    },
+    {
+      "recall_at_10": 0.93422,
+      "qps": 9050.086927937373,
+      "ef_search": 40
+    },
+    {
+      "recall_at_10": 0.97765,
+      "qps": 4958.14161827641,
+      "ef_search": 80
+    },
+    {
+      "recall_at_10": 0.98928,
+      "qps": 3454.180544179586,
+      "ef_search": 120
+    },
+    {
+      "recall_at_10": 0.99607,
+      "qps": 2200.6460021395883,
+      "ef_search": 200
+    },
+    {
+      "recall_at_10": 0.99887,
+      "qps": 1143.0831053070638,
+      "ef_search": 400
+    },
+    {
+      "recall_at_10": 0.99926,
+      "qps": 592.0734220576765,
+      "ef_search": 800
+    }
+  ],
+  "peak_rss_kib": 1240224,
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "rig": {
+    "commit": "a30314c5915cb0bd3de230178b3f84f88be1a381",
+    "dirty": true
+  },
+  "date_utc": "2026-07-03",
+  "command": "benches/vector/ann_baseline.py --subject faiss-hnsw --runs 3"
+}

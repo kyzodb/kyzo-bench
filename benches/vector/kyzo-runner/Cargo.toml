@@ -1,0 +1,15 @@
+[package]
+name = "kyzo-vector-runner"
+description = "kyzo#25: the KyzoDB subject — loads SIFT1M into a relation, builds an ::hnsw index, sweeps ef for the recall/QPS curve. Same method as the hnswlib/FAISS baselines."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+# The engine under test, linked read-only from the sibling checkout
+# (kyzodb/kyzo). The rig records the exact engine commit in every result.
+kyzo = { path = "../../../../kyzo/kyzo-core" }
+# Same ndarray line as kyzo-core, to hand query vectors across the API
+# boundary as DataValue::Vec without any text round-trip.
+ndarray = "0.17"

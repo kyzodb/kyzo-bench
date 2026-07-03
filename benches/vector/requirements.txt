@@ -1,0 +1,5 @@
+# Pinned opponents and dataset tooling for the vector bench (kyzo#25).
+hnswlib==0.8.0
+faiss-cpu==1.14.3
+h5py==3.16.0
+numpy==2.5.0
