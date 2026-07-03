@@ -1,0 +1,13 @@
+[package]
+name = "kyzo-oltp-runner"
+description = "kyzo#26 — the KyzoDB subject for the embedded-OLTP rig: replays the op stream through Db::run_script against a persistent fjall store."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+# The engine under test, linked read-only from the sibling checkout
+# (kyzodb/kyzo). A clean clone of kyzo-bench needs that sibling; the rig
+# records the exact engine commit in every result.
+kyzo = { path = "../../../../kyzo/kyzo-core" }

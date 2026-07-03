@@ -1,0 +1,13 @@
+[package]
+name = "oltp-rig"
+description = "kyzo#26 — embedded OLTP vs SQLite: one deterministic op stream, two engines, byte-identical outputs demanded."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+kyzo-bench-harness = { path = "../../../harness" }
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true

@@ -778,6 +778,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "kyzo-oltp-runner"
+version = "0.1.0"
+dependencies = [
+ "kyzo",
+]
+
+[[package]]
 name = "kyzo-runner"
 version = "0.1.0"
 dependencies = [
@@ -953,6 +960,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff76201f031d8863c38aa7f905eca4f53abbfa15f609db4277d44cd8938f33fe"
 dependencies = [
  "memchr",
+]
+
+[[package]]
+name = "oltp-rig"
+version = "0.1.0"
+dependencies = [
+ "kyzo-bench-harness",
+ "serde_json",
+ "sha2 0.11.0",
+ "thiserror",
 ]
 
 [[package]]

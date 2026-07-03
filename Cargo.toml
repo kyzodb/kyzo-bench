@@ -4,6 +4,8 @@ members = [
     "harness",
     "benches/datalog/rig",
     "benches/datalog/kyzo-runner",
+    "benches/oltp/rig",
+    "benches/oltp/kyzo-runner",
 ]
 
 [workspace.package]

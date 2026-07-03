@@ -1,0 +1,154 @@
+{
+  "bench": "oltp",
+  "story": "kyzo#26",
+  "subject": {
+    "kind": "opponent",
+    "name": "sqlite",
+    "version": "3.53.3",
+    "provenance": {
+      "kind": "built_from_source",
+      "repo": "https://www.sqlite.org/2026/sqlite-autoconf-3530300.tar.gz",
+      "reference": "3.53.3",
+      "script": "opponents/sqlite/build.sh"
+    }
+  },
+  "rig": {
+    "commit": "a30314c5915cb0bd3de230178b3f84f88be1a381",
+    "dirty": true
+  },
+  "workload": {
+    "id": "oltp/r100k-o20k",
+    "description": "100k-row table, 20k mixed ops (60r/20u/10i/10d)",
+    "seed": 26101,
+    "correctness_sha256": "e1fbefaa0cb53a1f821bf885e986a1c95542dcbf64a190855ebe1c67d4751e77"
+  },
+  "datasets": [
+    {
+      "name": "dump.sql",
+      "sha256": "5c22185765d0ce358bc4df6109f1b80b15f98a12784570837600953fa363484b",
+      "bytes": 59
+    },
+    {
+      "name": "load.sql",
+      "sha256": "a88d888c48664e9d75369bffbca4121d1c170afd619a1306e1577c8413182815",
+      "bytes": 1970968
+    },
+    {
+      "name": "mixed.sql",
+      "sha256": "2e336e2dee14bb60e004bed38475b346092ba88f9bbd3509b4f4e0fc9a855cdd",
+      "bytes": 901512
+    },
+    {
+      "name": "stream.ops",
+      "sha256": "5327713999c5cc4c20d54a492f6bcb545fec1679e8fe1c980dfd7e55c3182d4d",
+      "bytes": 2048657
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/sqlite/dist/bin/sqlite3",
+          "/home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/db.sqlite",
+          ".output /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/reads.tsv",
+          ".read /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/mixed.sql"
+        ],
+        "wall_micros": 495721,
+        "peak_rss_kib": 8464,
+        "output_sha256": "53af2e358f8dff80c3deaebf5e17910c918be3e5d7c0f313b680d808a5b7b775",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/sqlite/dist/bin/sqlite3",
+          "/home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/db.sqlite",
+          ".output /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/reads.tsv",
+          ".read /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/mixed.sql"
+        ],
+        "wall_micros": 410200,
+        "peak_rss_kib": 8564,
+        "output_sha256": "53af2e358f8dff80c3deaebf5e17910c918be3e5d7c0f313b680d808a5b7b775",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/sqlite/dist/bin/sqlite3",
+          "/home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/db.sqlite",
+          ".output /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/reads.tsv",
+          ".read /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/mixed.sql"
+        ],
+        "wall_micros": 397315,
+        "peak_rss_kib": 8368,
+        "output_sha256": "53af2e358f8dff80c3deaebf5e17910c918be3e5d7c0f313b680d808a5b7b775",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/sqlite/dist/bin/sqlite3",
+          "/home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/db.sqlite",
+          ".output /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/reads.tsv",
+          ".read /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/mixed.sql"
+        ],
+        "wall_micros": 493894,
+        "peak_rss_kib": 8456,
+        "output_sha256": "53af2e358f8dff80c3deaebf5e17910c918be3e5d7c0f313b680d808a5b7b775",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/opponents/sqlite/dist/bin/sqlite3",
+          "/home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/db.sqlite",
+          ".output /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/reads.tsv",
+          ".read /home/kyle/src/kyzo-bench/target/oltp-scratch/oltp_r100k-o20k/sqlite/mixed.sql"
+        ],
+        "wall_micros": 400514,
+        "peak_rss_kib": 8452,
+        "output_sha256": "53af2e358f8dff80c3deaebf5e17910c918be3e5d7c0f313b680d808a5b7b775",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-03",
+  "notes": "SQLite 3.53.3 CLI, WAL + synchronous=NORMAL (declared production config), autocommit per mixed op, 1000-row transactions in the load phase, ORDER BY id dump. Single connection, single thread — SQLite's native embedded shape. Mixed phase is the headline (20000 ops → 48757 ops/s median). Load: 100000 rows in median 150.3 ms (665194 rows/s). Dump (unmeasured sanity phase): 88.3 ms. Answer rows: 112026."
+}
