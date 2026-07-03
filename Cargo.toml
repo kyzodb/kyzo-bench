@@ -8,6 +8,7 @@ members = [
     "benches/oltp/kyzo-runner",
     "benches/fts/rig",
     "opponents/tantivy-runner",
+    "opponents/surrealdb-runner",
     "benches/vector/kyzo-runner",
 ]
 

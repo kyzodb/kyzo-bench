@@ -1,0 +1,11 @@
+[package]
+name = "surrealdb-runner"
+description = "kyzo#71 — the SurrealDB opponent, embedded via kv-rocksdb (the same durable, file-based local engine class SQLite and KyzoDB are compared as). Pinned exactly; changing the pin is changing the opponent."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+surrealdb = { version = "=3.2.0", features = ["kv-rocksdb"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
