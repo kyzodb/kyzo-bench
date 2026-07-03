@@ -1,0 +1,189 @@
+{
+  "bench": "fts",
+  "story": "kyzo#27",
+  "subject": {
+    "kind": "opponent",
+    "name": "tantivy",
+    "version": "0.26.1",
+    "provenance": {
+      "kind": "package",
+      "ecosystem": "cargo",
+      "package": "tantivy",
+      "version": "0.26.1"
+    }
+  },
+  "rig": {
+    "commit": "a30314c5915cb0bd3de230178b3f84f88be1a381",
+    "dirty": true
+  },
+  "workload": {
+    "id": "fts/gutenberg40",
+    "description": "40 Gutenberg books as paragraphs; 120 queries (40 term / 30 AND / 30 OR / 20 phrase)",
+    "seed": 27001,
+    "correctness_sha256": "34f1f8ef2f4ce8efcd9e676f75c630f55d5da700b5e433c8aded5011aa3cb9e3"
+  },
+  "datasets": [
+    {
+      "name": "docs.tsv",
+      "sha256": "f0d1379829b7424caa09cda6995eb5c3847a9dcadc140216a818efb1137c487c",
+      "bytes": 24817126
+    },
+    {
+      "name": "queries.tsv",
+      "sha256": "ddbbb961db59e3f9ffe5147b9d42c554f760f5881823bb0a0d262abfc8e0edc3",
+      "bytes": 2365
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/tantivy-runner",
+          "--index",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/tantivy-index",
+          "--phase",
+          "query",
+          "--queries",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/input/queries.tsv",
+          "--matches",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/matches.tsv",
+          "--ranked",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/ranked.tsv",
+          "--passes",
+          "20"
+        ],
+        "wall_micros": 185569,
+        "peak_rss_kib": 17700,
+        "output_sha256": "9ac501b6e62947292ec8119f2020e43a37ab99e006815ec2d7c7876297189b28",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/tantivy-runner",
+          "--index",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/tantivy-index",
+          "--phase",
+          "query",
+          "--queries",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/input/queries.tsv",
+          "--matches",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/matches.tsv",
+          "--ranked",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/ranked.tsv",
+          "--passes",
+          "20"
+        ],
+        "wall_micros": 273936,
+        "peak_rss_kib": 37700,
+        "output_sha256": "9ac501b6e62947292ec8119f2020e43a37ab99e006815ec2d7c7876297189b28",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/tantivy-runner",
+          "--index",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/tantivy-index",
+          "--phase",
+          "query",
+          "--queries",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/input/queries.tsv",
+          "--matches",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/matches.tsv",
+          "--ranked",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/ranked.tsv",
+          "--passes",
+          "20"
+        ],
+        "wall_micros": 138703,
+        "peak_rss_kib": 37700,
+        "output_sha256": "9ac501b6e62947292ec8119f2020e43a37ab99e006815ec2d7c7876297189b28",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/tantivy-runner",
+          "--index",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/tantivy-index",
+          "--phase",
+          "query",
+          "--queries",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/input/queries.tsv",
+          "--matches",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/matches.tsv",
+          "--ranked",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/ranked.tsv",
+          "--passes",
+          "20"
+        ],
+        "wall_micros": 107308,
+        "peak_rss_kib": 17888,
+        "output_sha256": "9ac501b6e62947292ec8119f2020e43a37ab99e006815ec2d7c7876297189b28",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/tantivy-runner",
+          "--index",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/tantivy-index",
+          "--phase",
+          "query",
+          "--queries",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/input/queries.tsv",
+          "--matches",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/matches.tsv",
+          "--ranked",
+          "/home/kyle/src/kyzo-bench/target/fts-scratch/fts_gutenberg40/tantivy/ranked.tsv",
+          "--passes",
+          "20"
+        ],
+        "wall_micros": 270686,
+        "peak_rss_kib": 17672,
+        "output_sha256": "9ac501b6e62947292ec8119f2020e43a37ab99e006815ec2d7c7876297189b28",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-03",
+  "notes": "Tantivy 0.26.1 as a library behind opponents/tantivy-runner; default tokenizer, positions indexed, multithreaded writer as shipped (1 GiB heap budget), queries built programmatically and run single-threaded. Query phase = 20 passes over the set + 1 verified pass. Corpus: 40994 paragraph docs. Headline is the query phase (2520 query executions → 13580 q/s median). Index build: median 1135.7 ms. Match-set rows: 47929 (sha 34f1f8ef2f4c); ranked top-10 is this engine's own BM25, sha 8fac53ed5744 — not cross-comparable."
+}

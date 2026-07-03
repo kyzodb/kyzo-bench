@@ -1,0 +1,13 @@
+[package]
+name = "fts-rig"
+description = "kyzo#27 — full-text search vs Tantivy and SQLite FTS5: one corpus, one query set, match sets agreement-checked, rankings recorded as each engine's own."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+kyzo-bench-harness = { path = "../../../harness" }
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true

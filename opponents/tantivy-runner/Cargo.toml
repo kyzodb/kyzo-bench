@@ -1,0 +1,10 @@
+[package]
+name = "tantivy-runner"
+description = "kyzo#27 — the Tantivy opponent: index a docs.tsv, run the query set, write match sets and its own BM25 top-10. Pinned exactly; changing the pin is changing the opponent."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+tantivy = "=0.26.1"

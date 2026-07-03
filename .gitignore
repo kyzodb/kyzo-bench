@@ -9,9 +9,13 @@ __pycache__/
 .venv/
 *.log
 
-# Opponent engines are built/fetched by their pinned build scripts,
-# never committed; only the scripts (and the hashes inside them) are.
-opponents/*/src/
+# Souffle and SQLite are vendored C/C++ source trees, fetched and built
+# by their pinned scripts, never committed — only the scripts (and the
+# hashes inside them) are. This must name each vendored opponent
+# explicitly: opponents/*/src/ would also blackhole opponents that are
+# our own Rust crates (e.g. tantivy-runner), whose src/ is real source.
+opponents/souffle/src/
+opponents/sqlite/src/
 opponents/*/dist/
 opponents/*/*.tar.gz
 
