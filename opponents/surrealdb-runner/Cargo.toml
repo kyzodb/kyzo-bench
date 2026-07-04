@@ -7,5 +7,11 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-surrealdb = { version = "=3.2.0", features = ["kv-rocksdb"] }
+# "allocator": SurrealDB's own performance docs
+# (surrealdb.com/docs/learn/querying/performance/performance-best-practices)
+# recommend it for embedded use — the engine's own best-game configuration,
+# not a knob we picked.
+surrealdb = { version = "=3.2.0", features = ["kv-rocksdb", "allocator"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+kyzo-bench-harness = { path = "../../harness" }
+serde_json.workspace = true

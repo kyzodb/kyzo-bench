@@ -60,7 +60,7 @@ impl Rig for OltpRig {
     const BENCH: &'static str = "oltp";
     const STORY: &'static str = "kyzo#26";
     const SUBJECTS: &'static [&'static str] = &["kyzo", "sqlite"];
-    const USAGE: &'static str = "usage: oltp-rig list | run --workload <id> --subject <s> [--runs N] [--land] | suite [--runs N] [--land]";
+    const USAGE: &'static str = "usage: oltp-rig list | run --workload <id> --subject <s> [--runs N] [--land] [--supersedes <path> <reason>] | suite [--runs N] [--land]";
 
     fn workloads() -> Vec<Registered> {
         suite()
@@ -170,12 +170,15 @@ impl Rig for OltpRig {
                     v
                 };
                 let notes = format!(
-                    "KyzoDB at engine commit {}{}; persistent fjall store, every op through \
-                     `Db::run_script` (parse included, exactly as SQLite parses each SQL \
-                     statement), one script per mixed op, 1000-row batch scripts in the load \
-                     phase, sorted dump. Single connection, single thread.",
+                    "KyzoDB at engine commit {} (pre-release: git-rev pinned via this repo's \
+                     own Cargo.lock, not a tagged version — see .claude/rules/methodology.md); \
+                     persistent fjall store, every op through `Db::run_script` (parse \
+                     included, exactly as SQLite parses each SQL statement), one script per \
+                     mixed op, 1000-row batches in the load phase bound through a `$data` \
+                     param (n-independent script text, matching the public bulk-`:put` \
+                     calling convention) rather than inlined as a literal list, sorted dump. \
+                     Single connection, single thread.",
                     commit.commit,
-                    commit.dirty_suffix(),
                 );
                 Ok(PreparedSubject {
                     subject: Subject::Kyzo(commit),

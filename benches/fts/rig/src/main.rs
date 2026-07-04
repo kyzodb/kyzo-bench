@@ -63,7 +63,7 @@ impl Rig for FtsRig {
     const BENCH: &'static str = "fts";
     const STORY: &'static str = "kyzo#27";
     const SUBJECTS: &'static [&'static str] = &["tantivy", "fts5"];
-    const USAGE: &'static str = "usage: fts-rig list | run --workload <id> --subject <s> [--runs N] [--land] | suite [--runs N] [--land]";
+    const USAGE: &'static str = "usage: fts-rig list | run --workload <id> --subject <s> [--runs N] [--land] [--supersedes <path> <reason>] | suite [--runs N] [--land]";
 
     fn workloads() -> Vec<Registered> {
         suite()

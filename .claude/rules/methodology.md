@@ -12,6 +12,13 @@ configuration retroactively poisons every result in the repo.
 - **Opponents are pinned and tuned in good faith.** Exact released version recorded in the rig,
   configuration per the opponent's own documentation, tuning that project's maintainers would sign
   off on. When their docs offer a performance guide, follow it and cite it in the rig's README.
+- **KyzoDB is pinned exactly like an opponent — never a live checkout.** A `Cargo.lock`-resolved
+  dependency on `kyzodb/kyzo` (a `git`+`rev` pin pre-release, a `=X.Y.Z` crates.io pin once the
+  engine tags releases), never a path dependency on a sibling working tree someone else is actively
+  editing. Hand-picking which dev commit to benchmark while every opponent is frozen at a released
+  version is exactly the asymmetry this rule exists to prevent. Headline/published numbers come
+  only from tagged releases; runs against a pre-release git-rev pin are engine-team feedback,
+  labeled as such in the result's `notes`.
 - **Same terms for both sides.** Same hardware, same dataset, same measurement window, warm/cold
   state declared. KyzoDB never gets a preparation step the opponent is denied.
 - **Scope is declared, not implied.** Single-node scoped honestly as single-node; embedded engines

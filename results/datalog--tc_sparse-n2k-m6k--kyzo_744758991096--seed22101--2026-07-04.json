@@ -1,0 +1,168 @@
+{
+  "bench": "datalog",
+  "story": "kyzo#22",
+  "subject": {
+    "kind": "kyzo",
+    "commit": "74475899109618ef5e3214fae01d7e510aa28f6d",
+    "dirty": false
+  },
+  "rig": {
+    "commit": "2cf9c1a3258319fc854efb78325220178a14cc40",
+    "dirty": true
+  },
+  "workload": {
+    "id": "tc/sparse-n2k-m6k",
+    "description": "transitive closure, uniform digraph, 2k nodes / 6k edges",
+    "seed": 22101,
+    "correctness_sha256": "9c11f2d290f69b5b66d2943d461f4633244027025abd4b99b24e22c084df0d16"
+  },
+  "datasets": [
+    {
+      "name": "edge.facts",
+      "sha256": "18a2513c1a06dada6d896c8963e5542c63d9af5fe1093bded633cf78b493755f",
+      "bytes": 53514
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/kyzo-store"
+        ],
+        "wall_micros": 8987483,
+        "peak_rss_kib": 1803296,
+        "output_sha256": "a3387cc881348b3766404f1005cb59bdef2c2d6a8706366b2156eb2f3d8a4ec2",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/kyzo-store"
+        ],
+        "wall_micros": 8915558,
+        "peak_rss_kib": 1821600,
+        "output_sha256": "a3387cc881348b3766404f1005cb59bdef2c2d6a8706366b2156eb2f3d8a4ec2",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/kyzo-store"
+        ],
+        "wall_micros": 9050591,
+        "peak_rss_kib": 1803092,
+        "output_sha256": "a3387cc881348b3766404f1005cb59bdef2c2d6a8706366b2156eb2f3d8a4ec2",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/kyzo-store"
+        ],
+        "wall_micros": 9254936,
+        "peak_rss_kib": 1751676,
+        "output_sha256": "a3387cc881348b3766404f1005cb59bdef2c2d6a8706366b2156eb2f3d8a4ec2",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_sparse-n2k-m6k/kyzo/kyzo-store"
+        ],
+        "wall_micros": 9043684,
+        "peak_rss_kib": 1815568,
+        "output_sha256": "a3387cc881348b3766404f1005cb59bdef2c2d6a8706366b2156eb2f3d8a4ec2",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-04",
+  "notes": "KyzoDB at engine commit 74475899109618ef5e3214fae01d7e510aa28f6d; end-to-end per run, same shape as the Souffle invocation: fresh store, TSV facts loaded through `Db::run_script` mutations, query evaluated, answer written as TSV. The engine persists facts durably (fjall LSM) inside the measured window; Souffle holds them in memory — same window, different obligations, stated rather than hidden. Answer rows: 3526911."
+}

@@ -1,0 +1,169 @@
+{
+  "bench": "datalog",
+  "story": "kyzo#22",
+  "subject": {
+    "kind": "kyzo",
+    "commit": "74475899109618ef5e3214fae01d7e510aa28f6d",
+    "dirty": false
+  },
+  "rig": {
+    "commit": "2cf9c1a3258319fc854efb78325220178a14cc40",
+    "dirty": true
+  },
+  "workload": {
+    "id": "tc/snap-wiki-Vote",
+    "description": "transitive closure, SNAP wiki-Vote (7.1k nodes, 103.7k edges, real)",
+    "seed": 22401,
+    "correctness_sha256": "7a70f3bd183f4153c31485058fe4dcf887a3d37fa85d120e8764d3aeb7296da1"
+  },
+  "datasets": [
+    {
+      "name": "edge.facts",
+      "sha256": "92cfd4c6c845980c560255b063ebbab6d3f85fad738e6332b16e828a295c5860",
+      "bytes": 991089
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/kyzo-store"
+        ],
+        "wall_micros": 82443318,
+        "peak_rss_kib": 6827788,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/kyzo-store"
+        ],
+        "wall_micros": 82587071,
+        "peak_rss_kib": 6827804,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/kyzo-store"
+        ],
+        "wall_micros": 81344867,
+        "peak_rss_kib": 6281260,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/kyzo-store"
+        ],
+        "wall_micros": 81903832,
+        "peak_rss_kib": 6520292,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-wiki-Vote/kyzo/kyzo-store"
+        ],
+        "wall_micros": 82100575,
+        "peak_rss_kib": 6579528,
+        "output_sha256": "4131e481017ce428ac55b5fe3689daf62dc60bb78a0ac11cbcf72d847c533ca5",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-04",
+  "notes": "KyzoDB at engine commit 74475899109618ef5e3214fae01d7e510aa28f6d; end-to-end per run, same shape as the Souffle invocation: fresh store, TSV facts loaded through `Db::run_script` mutations, query evaluated, answer written as TSV. The engine persists facts durably (fjall LSM) inside the measured window; Souffle holds them in memory — same window, different obligations, stated rather than hidden. Answer rows: 11947132.",
+  "supersedes": "datalog--tc_snap-wiki-Vote--kyzo_744758991096--seed22401--2026-07-04.json and its -2 correction: both landed during unpredictable transient load spikes on this shared host; this is the isolated re-measurement on a monitored-quiet machine"
+}

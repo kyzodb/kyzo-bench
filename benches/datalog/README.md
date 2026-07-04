@@ -26,25 +26,26 @@ Correctness is enforced, not sampled: canonical answers (sorted unique lines, SH
 identical across every run of every subject, and `suite` mode refuses to emit numbers if any two
 subjects disagree on any workload.
 
-## Standings (this hardware; engine numbers are dev-tree indications until landed)
+## Standings (this hardware)
 
 Souffle numbers are from the default 32-bit domain build (the first cut used the non-default
 64-bit flag; the fairness review caught it, those records were discarded, and everything below
-was re-measured — answer hashes were unaffected).
+was re-measured — answer hashes were unaffected). KyzoDB numbers are commit `7447589`, clean tree,
+landed in `results/`.
 
-| workload | rows | Souffle 2.5 | Souffle compiled | KyzoDB @86b2f69 (dirty) |
+| workload | rows | Souffle 2.5 | Souffle compiled | KyzoDB @7447589 |
 |---|---|---|---|---|
-| tc/sparse-n2k-m6k | 3.5 M | 0.56 s / 78 MiB | 0.89 s | 13.7 s, 2.8 GiB — answer identical |
-| tc/sparse-n10k-m30k | 88.4 M | 13.1 s / 1.6 GiB | 10.7 s | not yet run |
-| sg/layered-l12-w600-p2 | 2.7 M | 0.40 s / 76 MiB | 0.32 s | 9.7 s, 2.7 GiB — answer identical |
-| pointsto/v3k-a2k-s6k | 4.1 M | 16.6 s / 108 MiB | 7.5 s | **OOM-killed** at 12 GiB cap (~27 s) |
-| tc/snap-wiki-Vote (real) | 11.9 M | 2.25 s / 275 MiB | 1.76 s | 165.9 s, 9.8 GiB — answer identical |
-| tc/snap-p2p-Gnutella08 (real) | 13.1 M | 1.89 s / 237 MiB | 1.53 s | **OOM-killed** at 12 GiB cap (~74 s) |
+| tc/sparse-n2k-m6k | 3.5 M | 0.56 s / 78 MiB | 0.89 s | 9.0 s, 1.74 GiB — answer identical |
+| tc/sparse-n10k-m30k | 88.4 M | 13.1 s / 1.6 GiB | 10.7 s | **OOM-killed** at 12 GiB cap (~77 s) |
+| sg/layered-l12-w600-p2 | 2.7 M | 0.40 s / 76 MiB | 0.32 s | 7.1 s, 1.76 GiB — answer identical |
+| pointsto/v3k-a2k-s6k | 4.1 M | 16.6 s / 108 MiB | 7.5 s | **OOM-killed** at 12 GiB cap (~27-38 s) — [kyzo#68](https://github.com/kyzodb/kyzo/issues/68), reopened: a prior fix's closing comment claimed this completes at 1.93 GiB on this exact commit; independent re-measurement contradicts it |
+| tc/snap-wiki-Vote (real) | 11.9 M | 2.25 s / 275 MiB | 1.76 s | 82.1 s, 6.51 GiB — answer identical |
+| tc/snap-p2p-Gnutella08 (real) | 13.1 M | 1.89 s / 237 MiB | 1.53 s | 42.3 s, 6.09 GiB — answer identical |
 
 tc/snap-p2p-Gnutella31 was tried and refused for everyone: its closure blows the 12 GiB cap
-(Souffle included). Souffle baselines are landed in `results/`; KyzoDB numbers land when they can
-name a clean engine commit. DDlog is not yet rigged: it is unmaintained upstream and needs a
-Haskell toolchain; if it joins, it joins pinned like everything else.
+(Souffle included). Souffle baselines are landed in `results/`. DDlog is not yet rigged: it is
+unmaintained upstream and needs a Haskell toolchain; if it joins, it joins pinned like everything
+else.
 
 ## Run it
 

@@ -1,0 +1,168 @@
+{
+  "bench": "datalog",
+  "story": "kyzo#22",
+  "subject": {
+    "kind": "kyzo",
+    "commit": "74475899109618ef5e3214fae01d7e510aa28f6d",
+    "dirty": false
+  },
+  "rig": {
+    "commit": "2cf9c1a3258319fc854efb78325220178a14cc40",
+    "dirty": true
+  },
+  "workload": {
+    "id": "tc/snap-p2p-Gnutella08",
+    "description": "transitive closure, SNAP p2p-Gnutella08 (6.3k nodes, 20.8k edges, real)",
+    "seed": 22402,
+    "correctness_sha256": "33ce4a795bbe764a8494d00f771216caae9495b6efac92e397aaf54c0846e553"
+  },
+  "datasets": [
+    {
+      "name": "edge.facts",
+      "sha256": "1e9afa303c1965c152f6f00e44039fc55a7a9e0446c653577589744b2449d492",
+      "bytes": 194395
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/kyzo-store"
+        ],
+        "wall_micros": 36496842,
+        "peak_rss_kib": 6384388,
+        "output_sha256": "95ade3535947ff4559491bd924180465e8424923b6e12c66a17514d4687a4215",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/kyzo-store"
+        ],
+        "wall_micros": 42339331,
+        "peak_rss_kib": 6016944,
+        "output_sha256": "95ade3535947ff4559491bd924180465e8424923b6e12c66a17514d4687a4215",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/kyzo-store"
+        ],
+        "wall_micros": 46043846,
+        "peak_rss_kib": 6162784,
+        "output_sha256": "95ade3535947ff4559491bd924180465e8424923b6e12c66a17514d4687a4215",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/kyzo-store"
+        ],
+        "wall_micros": 41590599,
+        "peak_rss_kib": 6262800,
+        "output_sha256": "95ade3535947ff4559491bd924180465e8424923b6e12c66a17514d4687a4215",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/facts",
+          "--relations",
+          "edge:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/tc.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/out/tc.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/tc_snap-p2p-Gnutella08/kyzo/kyzo-store"
+        ],
+        "wall_micros": 43349998,
+        "peak_rss_kib": 6203096,
+        "output_sha256": "95ade3535947ff4559491bd924180465e8424923b6e12c66a17514d4687a4215",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-04",
+  "notes": "KyzoDB at engine commit 74475899109618ef5e3214fae01d7e510aa28f6d; end-to-end per run, same shape as the Souffle invocation: fresh store, TSV facts loaded through `Db::run_script` mutations, query evaluated, answer written as TSV. The engine persists facts durably (fjall LSM) inside the measured window; Souffle holds them in memory — same window, different obligations, stated rather than hidden. Answer rows: 13148244."
+}

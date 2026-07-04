@@ -13,6 +13,8 @@
 
 pub mod canon;
 pub mod dataset;
+pub mod envelope;
+pub mod flat_vectors;
 pub mod hardware;
 pub mod opponents;
 pub mod record;
@@ -24,10 +26,14 @@ pub mod workload;
 
 pub use canon::{CanonicalAnswer, canonical_answer, raw_answer};
 pub use dataset::DatasetDigest;
+pub use envelope::EnvelopeError;
+pub use flat_vectors::FlatVectors;
 pub use hardware::Hardware;
 pub use record::{LandError, ResultRecord};
 pub use rig::{AnswerSpec, HashKind, Phase, PreparedSubject, Rig, RigError};
 pub use run::{CapPolicy, Measurement, RunError, RunSet, Runner};
 pub use seed::{Seed, SplitMix64};
-pub use subject::{EngineCommit, EngineLocateError, Opponent, Provenance, Subject, locate_kyzo};
+pub use subject::{
+    EngineCommit, EngineLocateError, EnginePin, Opponent, Provenance, Subject, locate_kyzo,
+};
 pub use workload::Workload;

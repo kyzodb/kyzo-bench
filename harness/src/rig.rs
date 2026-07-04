@@ -91,11 +91,6 @@ pub enum RigError {
     #[error(transparent)]
     Sqlite(#[from] crate::opponents::sqlite::SqliteError),
     #[error(
-        "refusing to land: the engine working tree is dirty; a result must name a commit \
-         that exists"
-    )]
-    DirtyEngine,
-    #[error(
         "cross-subject disagreement on {workload}: {a} vs {b}; a benchmark number for a \
          disputed answer is not a result — file the defect"
     )]
@@ -284,6 +279,11 @@ struct Options<R: Rig> {
     subject: Option<String>,
     runs: usize,
     land: bool,
+    /// Set by `--supersedes <path> <reason>`: this land is a correction of
+    /// an earlier, flawed record, which stays (append-only) while this one
+    /// claims the next free same-day filename. `path` is relative to
+    /// `results/`; `reason` is the one sentence naming the flaw.
+    supersedes: Option<String>,
     extra: R::Extra,
 }
 
@@ -294,6 +294,7 @@ impl<R: Rig> Options<R> {
             subject: None,
             runs: 5,
             land: false,
+            supersedes: None,
             extra: R::Extra::default(),
         };
         let mut it = args.iter();
@@ -313,6 +314,11 @@ impl<R: Rig> Options<R> {
                         .ok_or(RigError::Usage(R::USAGE))?;
                 }
                 "--land" => o.land = true,
+                "--supersedes" => {
+                    let path = it.next().ok_or(RigError::Usage(R::USAGE))?.clone();
+                    let reason = it.next().ok_or(RigError::Usage(R::USAGE))?.clone();
+                    o.supersedes = Some(format!("{path}: {reason}"));
+                }
                 other => {
                     if !R::parse_extra_flag(other, &mut it, &mut o.extra)? {
                         return Err(RigError::Usage(R::USAGE));
@@ -475,7 +481,7 @@ fn run_one<R: Rig>(
         runs: headline,
         date: ResultRecord::today_utc(),
         notes,
-        supersedes: None,
+        supersedes: opt.supersedes.clone(),
     };
 
     let median_ms = record.runs.wall_micros_median() as f64 / 1000.0;
@@ -493,11 +499,6 @@ fn run_one<R: Rig>(
     );
 
     if opt.land {
-        if let Subject::Kyzo(c) = &record.subject
-            && c.dirty
-        {
-            return Err(RigError::DirtyEngine);
-        }
         let path = record.land(&root.join("results"))?;
         eprintln!("landed: {}", path.display());
     } else {

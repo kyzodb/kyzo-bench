@@ -15,11 +15,17 @@
 //!
 //! Output: one JSON-ish line per ef point on stdout
 //! (`ef recall qps build_seconds`), timings on stderr.
+//!
+//! `--n <count>` caps the loaded base-vector count to the first `count`
+//! rows of the same fetched flat dataset, and `--build-only` skips the
+//! query sweep entirely (load + build, print `build_seconds`, exit) — the
+//! shape needed for a build-time-vs-scale sweep (kyzo/kyzo#76) without
+//! fetching a family of differently-sized datasets.
 
 use kyzo::{DataValue, Db, Num, Vector, new_fjall_storage};
+use kyzo_bench_harness::FlatVectors;
 use ndarray::Array1;
 use std::collections::BTreeMap;
-use std::io::Read;
 use std::path::PathBuf;
 use std::time::Instant;
 
@@ -43,6 +49,15 @@ struct Args {
     store: PathBuf,
     runs: usize,
     ef_sweep: Vec<usize>,
+    /// Caps the loaded base-vector count to the first `n` rows of the flat
+    /// dataset — a scale study (build time vs. n) on one fetched dataset
+    /// rather than a family of separately fetched ones. `None` loads all of
+    /// `flat.n`.
+    n_cap: Option<usize>,
+    /// Skip the query sweep entirely: load + build, print build_seconds,
+    /// exit. For the build-time-vs-scale study, where the query curve at
+    /// small n isn't the question being asked.
+    build_only: bool,
 }
 
 fn parse_args() -> Result<Args, String> {
@@ -50,6 +65,8 @@ fn parse_args() -> Result<Args, String> {
     let mut store = None;
     let mut runs = 3usize;
     let mut ef_sweep = vec![10, 20, 40, 80, 120, 200, 400, 800];
+    let mut n_cap = None;
+    let mut build_only = false;
     let mut it = std::env::args().skip(1);
     while let Some(a) = it.next() {
         let mut next = |flag: &str| it.next().ok_or(format!("{flag} needs a value"));
@@ -67,6 +84,14 @@ fn parse_args() -> Result<Args, String> {
                     .map(|s| s.parse().map_err(|_| format!("bad ef {s:?}")))
                     .collect::<Result<_, _>>()?
             }
+            "--n" => {
+                n_cap = Some(
+                    next("--n")?
+                        .parse()
+                        .map_err(|_| "bad --n".to_owned())?,
+                )
+            }
+            "--build-only" => build_only = true,
             other => return Err(format!("unknown flag {other:?}")),
         }
     }
@@ -75,61 +100,20 @@ fn parse_args() -> Result<Args, String> {
         store: store.ok_or("--store is required")?,
         runs,
         ef_sweep,
-    })
-}
-
-struct Flat {
-    n: usize,
-    dim: usize,
-    q: usize,
-    k_truth: usize,
-    train: Vec<f32>,
-    test: Vec<f32>,
-    neighbors: Vec<i64>,
-}
-
-fn read_flat(dir: &std::path::Path) -> Result<Flat, Box<dyn std::error::Error>> {
-    let shape = std::fs::read_to_string(dir.join("shape.txt"))?;
-    let dims: Vec<usize> = shape
-        .split_whitespace()
-        .map(|s| s.parse())
-        .collect::<Result<_, _>>()?;
-    let [n, dim, q, k_truth] = dims[..] else {
-        return Err(format!("shape.txt has {} fields, want 4", dims.len()).into());
-    };
-    let read_f32 = |name: &str, len: usize| -> Result<Vec<f32>, Box<dyn std::error::Error>> {
-        let mut bytes = Vec::with_capacity(len * 4);
-        std::fs::File::open(dir.join(name))?.read_to_end(&mut bytes)?;
-        if bytes.len() != len * 4 {
-            return Err(format!("{name}: {} bytes, want {}", bytes.len(), len * 4).into());
-        }
-        Ok(bytes
-            .chunks_exact(4)
-            .map(|c| f32::from_le_bytes([c[0], c[1], c[2], c[3]]))
-            .collect())
-    };
-    let mut nb = Vec::with_capacity(q * k_truth * 8);
-    std::fs::File::open(dir.join("neighbors.i64"))?.read_to_end(&mut nb)?;
-    if nb.len() != q * k_truth * 8 {
-        return Err(format!("neighbors.i64: {} bytes, want {}", nb.len(), q * k_truth * 8).into());
-    }
-    Ok(Flat {
-        n,
-        dim,
-        q,
-        k_truth,
-        train: read_f32("train.f32", n * dim)?,
-        test: read_f32("test.f32", q * dim)?,
-        neighbors: nb
-            .chunks_exact(8)
-            .map(|c| i64::from_le_bytes(c.try_into().expect("chunk of 8")))
-            .collect(),
+        n_cap,
+        build_only,
     })
 }
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let args = parse_args()?;
-    let flat = read_flat(&args.flat)?;
+    let mut flat = FlatVectors::read(&args.flat)?;
+    if let Some(n) = args.n_cap {
+        if n < flat.n {
+            flat.train.truncate(n * flat.dim);
+            flat.n = n;
+        }
+    }
     eprintln!(
         "dataset: n={} dim={} q={} k_truth={}",
         flat.n, flat.dim, flat.q, flat.k_truth
@@ -182,6 +166,16 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     )?;
     let build_seconds = t_build.elapsed().as_secs_f64();
     eprintln!("build: {build_seconds:.3}s");
+
+    if args.build_only {
+        println!(
+            "{{\"n\": {}, \"dim\": {}, \"build_seconds\": {build_seconds}, \"load_seconds\": {}}}",
+            flat.n,
+            flat.dim,
+            load.as_secs_f64()
+        );
+        return Ok(());
+    }
 
     // Sweep: full query set per pass, median pass for QPS, recall@10
     // against the exact ground truth.

@@ -70,7 +70,12 @@ Same-parameter HNSW head-to-head: hnswlib is ~1.7–2.2x faster than FAISS's
 IndexHNSWFlat at equal recall on this host — a known ann-benchmarks result,
 reproduced not assumed.
 
-KyzoDB: running; the curve lands in `results/` and here when it completes.
+KyzoDB: does not complete. The build (M=16, efConstruction=200, same as above) OOMs under the
+house's 12 GiB address-space cap after ~12.5 minutes, failing on a single 8 GiB allocation — no
+recall/QPS curve to report. Filed as evidence on
+[kyzo#76](https://github.com/kyzodb/kyzo/issues/76), which independently tracks the same build
+tracked superlinear in build time (exponent ≈1.44 measured at n=1k-16k on `kyzo-bench`'s own
+build-time-vs-scale sweep, `--build-only`/`--n` flags on `kyzo-vector-runner`).
 
 ## Run it
 

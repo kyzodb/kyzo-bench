@@ -1,0 +1,169 @@
+{
+  "bench": "datalog",
+  "story": "kyzo#22",
+  "subject": {
+    "kind": "kyzo",
+    "commit": "74475899109618ef5e3214fae01d7e510aa28f6d",
+    "dirty": false
+  },
+  "rig": {
+    "commit": "2cf9c1a3258319fc854efb78325220178a14cc40",
+    "dirty": true
+  },
+  "workload": {
+    "id": "sg/layered-l12-w600-p2",
+    "description": "same-generation, 12 generations of 600, 2 parents each",
+    "seed": 22201,
+    "correctness_sha256": "dc12eb4401016b69d637d6e015c77a460454eb33e13cdadc6d7edc7950f9a4e3"
+  },
+  "datasets": [
+    {
+      "name": "parent.facts",
+      "sha256": "7c053f81a52b985ebca06cd9c1ec54e8cbd8ae82c83efd20001b48c78b27a447",
+      "bytes": 128986
+    }
+  ],
+  "hardware": {
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040,
+    "arch": "x86_64",
+    "kernel": "7.0.12-arch1-1"
+  },
+  "caps": {
+    "mem_bytes": 12884901888,
+    "timeout_secs": 1800
+  },
+  "runs": {
+    "measurements": [
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/facts",
+          "--relations",
+          "parent:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/out/sg.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/kyzo-store"
+        ],
+        "wall_micros": 7082440,
+        "peak_rss_kib": 1820660,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/facts",
+          "--relations",
+          "parent:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/out/sg.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/kyzo-store"
+        ],
+        "wall_micros": 7066585,
+        "peak_rss_kib": 1747388,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/facts",
+          "--relations",
+          "parent:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/out/sg.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/kyzo-store"
+        ],
+        "wall_micros": 6928020,
+        "peak_rss_kib": 1845068,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/facts",
+          "--relations",
+          "parent:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/out/sg.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/kyzo-store"
+        ],
+        "wall_micros": 7032236,
+        "peak_rss_kib": 1837952,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      },
+      {
+        "argv": [
+          "timeout",
+          "--signal=KILL",
+          "1800",
+          "prlimit",
+          "--as=12884901888",
+          "--",
+          "/home/kyle/src/kyzo-bench/target/release/kyzo-runner",
+          "--facts",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/facts",
+          "--relations",
+          "parent:2",
+          "--program",
+          "/home/kyle/src/kyzo-bench/benches/datalog/programs/sg.kz",
+          "--output",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/out/sg.csv",
+          "--store",
+          "/home/kyle/src/kyzo-bench/target/datalog-scratch/sg_layered-l12-w600-p2/kyzo/kyzo-store"
+        ],
+        "wall_micros": 7118441,
+        "peak_rss_kib": 1848936,
+        "output_sha256": "5cd13249455a81d9c1c53714dac48df76aeab0a9edc4d6eb46c4abe644086867",
+        "warm": "warm"
+      }
+    ]
+  },
+  "date": "2026-07-04",
+  "notes": "KyzoDB at engine commit 74475899109618ef5e3214fae01d7e510aa28f6d; end-to-end per run, same shape as the Souffle invocation: fresh store, TSV facts loaded through `Db::run_script` mutations, query evaluated, answer written as TSV. The engine persists facts durably (fjall LSM) inside the measured window; Souffle holds them in memory — same window, different obligations, stated rather than hidden. Answer rows: 2690060.",
+  "supersedes": "datalog--sg_layered-l12-w600-p2--kyzo_744758991096--seed22201--2026-07-04.json and its -2 correction: both landed while a concurrent CPU-heavy process was active on this shared host (own OLTP job, then an unrelated external hostile-review test run); this is the isolated measurement"
+}

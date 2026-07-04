@@ -1,0 +1,93 @@
+{
+  "bench": "vector",
+  "command": "/home/kyle/.local/bin/cursor.AppImage vector --index hnsw --flat datasets/vector/flat --store /tmp/kyzo-bench-surreal-hnsw --runs 3 --land",
+  "date": "2026-07-04",
+  "hardware": {
+    "arch": "x86_64",
+    "cpu_model": "Intel(R) Core(TM) i9-14900K",
+    "kernel": "7.0.12-arch1-1",
+    "logical_cpus": 32,
+    "mem_total_kib": 131569040
+  },
+  "metrics": {
+    "build_seconds": 20.021820358,
+    "cache_bytes": 2147483648,
+    "config": {
+      "dist": "euclidean",
+      "efc": 200,
+      "index": "hnsw",
+      "m": 16,
+      "type": "F32"
+    },
+    "curve": [
+      {
+        "ef_search": 10,
+        "qps": 1337.407243239628,
+        "recall_at_10": 0.72564
+      },
+      {
+        "ef_search": 20,
+        "qps": 991.8756725328687,
+        "recall_at_10": 0.8519
+      },
+      {
+        "ef_search": 40,
+        "qps": 664.3909046272671,
+        "recall_at_10": 0.93642
+      },
+      {
+        "ef_search": 80,
+        "qps": 413.8734585957959,
+        "recall_at_10": 0.98012
+      },
+      {
+        "ef_search": 120,
+        "qps": 315.4038796989618,
+        "recall_at_10": 0.9904
+      },
+      {
+        "ef_search": 200,
+        "qps": 212.20591596004516,
+        "recall_at_10": 0.99665
+      },
+      {
+        "ef_search": 400,
+        "qps": 124.15313489399645,
+        "recall_at_10": 0.99887
+      },
+      {
+        "ef_search": 800,
+        "qps": 73.70925093372948,
+        "recall_at_10": 0.99925
+      }
+    ],
+    "dataset": {
+      "base_vectors": 1000000,
+      "dim": 128,
+      "metric": "euclidean",
+      "name": "ann-benchmarks/sift-128-euclidean",
+      "queries": 10000,
+      "sha256": "dd6f0a6ed6b7ebb8934680f861a33ed01ff33991eaee4fd60914d854a0ca5984"
+    },
+    "load_seconds": 47.764455719,
+    "peak_rss_kib": 31543256,
+    "query_threads": 1,
+    "scope_note": "ann-benchmarks method, database class (see kyzo-vector-runner, not hnswlib/FAISS's batched-library class): recall@10 vs QPS with one query, one SurrealQL round trip, per test vector — no batched multi-query API used because SurrealDB, like KyzoDB, does not expose one for its normal query door. hnsw tuned per SurrealDB's own docs (surrealdb.com/docs/reference/query-language/statements/define/indexes); `SURREAL_HNSW_CACHE_SIZE` set to 2147483648 bytes (sized to comfortably hold SIFT1M's working set, not left at the 256 MiB default sized for far smaller graphs), not left at whatever undocumented default the process would otherwise pick up. Build (hnsw index) times `DEFINE INDEX ... CONCURRENTLY` from issuance to `INFO FOR INDEX` first reporting `building.status = 'ready'`, polled every 1s — not the plain blocking form, which this workload's scale drove into a real RocksDB optimistic-transaction-conflict failure (`Transaction could not check for conflicts ... MemTable only contains changes newer than SequenceNumber ...`) after running for wall-clock minutes as one transaction; `CONCURRENTLY` is SurrealDB's own documented mechanism for exactly this case (\"building indexes can be lengthy\").             A full, untimed, throwaway pass over every test query runs after build and before the first timed sweep point: SurrealDB's HNSW graph is lazily paged in from RocksDB rather than made fully resident when `CONCURRENTLY` reports `ready`, so the first real access pattern pays a one-off cost to pull the whole graph off disk. Measured directly: with only a 50-query warm-up, the first timed pass ran 289x slower than the next two passes at the identical ef (3435s vs a median of ~11s) — a real cost that a 3-pass median absorbs into a clean-looking number without fixing what produced it, which is not the same thing as it not happening. A full pass is the smallest warm-up directly confirmed sufficient. Each sweep point is the median of 3 full 10000-query passes, one query in flight at a time (SurrealDB's tokio runtime is necessarily multi-threaded per its own embedding docs; nothing here issues concurrent queries)."
+  },
+  "rig": {
+    "commit": "2cf9c1a3258319fc854efb78325220178a14cc40",
+    "dirty": true
+  },
+  "story": "kyzo#25",
+  "subject": {
+    "kind": "opponent",
+    "name": "surrealdb-hnsw",
+    "provenance": {
+      "ecosystem": "cargo",
+      "kind": "package",
+      "package": "surrealdb",
+      "version": "3.2.0"
+    },
+    "version": "3.2.0"
+  }
+}

@@ -51,7 +51,7 @@ impl Rig for DatalogRig {
     const BENCH: &'static str = "datalog";
     const STORY: &'static str = "kyzo#22";
     const SUBJECTS: &'static [&'static str] = &["kyzo", "souffle", "souffle-compiled"];
-    const USAGE: &'static str = "usage: datalog-rig list | run --workload <id> --subject <s> [--runs N] [--threads N] [--land] | suite [--runs N] [--threads N] [--land]";
+    const USAGE: &'static str = "usage: datalog-rig list | run --workload <id> --subject <s> [--runs N] [--threads N] [--land] [--supersedes <path> <reason>] | suite [--runs N] [--threads N] [--land]";
 
     fn workloads() -> Vec<Registered> {
         workloads::suite()
@@ -152,14 +152,14 @@ impl Rig for DatalogRig {
                     scratch.join("kyzo-store").display().to_string(),
                 ];
                 let notes = format!(
-                    "KyzoDB at engine commit {}{}; end-to-end per run, same shape as the \
-                     Souffle invocation: fresh store, TSV facts loaded through \
-                     `Db::run_script` mutations, query evaluated, answer written as TSV. \
-                     The engine persists facts durably (fjall LSM) inside the measured \
-                     window; Souffle holds them in memory — same window, different \
-                     obligations, stated rather than hidden.",
+                    "KyzoDB at engine commit {} (pre-release: git-rev pinned via this repo's \
+                     own Cargo.lock, not a tagged version — see .claude/rules/methodology.md); \
+                     end-to-end per run, same shape as the Souffle invocation: fresh store, \
+                     TSV facts loaded through `Db::run_script` mutations, query evaluated, \
+                     answer written as TSV. The engine persists facts durably (fjall LSM) \
+                     inside the measured window; Souffle holds them in memory — same window, \
+                     different obligations, stated rather than hidden.",
                     commit.commit,
-                    commit.dirty_suffix(),
                 );
                 Ok(PreparedSubject {
                     subject: kyzo_bench_harness::Subject::Kyzo(commit),

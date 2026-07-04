@@ -97,20 +97,34 @@ fn script(db: &Engine, s: &str) -> Result<kyzo::NamedRows, Box<dyn std::error::E
     Ok(db.run_script(s, BTreeMap::new())?)
 }
 
+/// The param-driven `:put` script text is `n`-independent: every batch,
+/// regardless of size, reuses this exact string, so the engine parses it
+/// once per batch instead of re-parsing `n` inlined row literals. Rows
+/// travel through the `$data` param instead (kyzo-core#74).
+const PUT_PARAM_SCRIPT: &str = "?[id, grp, val] <- $data :put item {id => grp, val}";
+
 fn phase_load(db: &Engine, args: &Args) -> Result<(), Box<dyn std::error::Error>> {
     script(db, "?[id, grp, val] <- [] :create item {id => grp, val}")?;
-    let mut batch: Vec<String> = Vec::with_capacity(LOAD_BATCH);
-    let flush = |batch: &mut Vec<String>| -> Result<(), Box<dyn std::error::Error>> {
+    let mut batch: Vec<[i64; 3]> = Vec::with_capacity(LOAD_BATCH);
+    let flush = |batch: &mut Vec<[i64; 3]>| -> Result<(), Box<dyn std::error::Error>> {
         if batch.is_empty() {
             return Ok(());
         }
-        script(
-            db,
-            &format!(
-                "?[id, grp, val] <- [{}] :put item {{id => grp, val}}",
-                batch.join(",")
-            ),
-        )?;
+        let data = DataValue::List(
+            batch
+                .iter()
+                .map(|[id, grp, val]| {
+                    DataValue::List(vec![
+                        DataValue::from(*id),
+                        DataValue::from(*grp),
+                        DataValue::from(*val),
+                    ])
+                })
+                .collect(),
+        );
+        let mut params = BTreeMap::new();
+        params.insert("data".to_string(), data);
+        db.run_script(PUT_PARAM_SCRIPT, params)?;
         batch.clear();
         Ok(())
     };
@@ -119,8 +133,7 @@ fn phase_load(db: &Engine, args: &Args) -> Result<(), Box<dyn std::error::Error>
         let Some(rest) = line.strip_prefix("L ") else {
             continue;
         };
-        let [id, grp, val] = fields3(rest)?;
-        batch.push(format!("[{id},{grp},{val}]"));
+        batch.push(fields3(rest)?);
         if batch.len() == LOAD_BATCH {
             flush(&mut batch)?;
         }

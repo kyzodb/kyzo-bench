@@ -53,19 +53,35 @@ pub enum LandError {
 impl ResultRecord {
     /// Write this record into `results_dir`, refusing to overwrite.
     /// Returns the path it landed at.
+    ///
+    /// The filename carries the run's identity down to the day, not the
+    /// second, so a same-day re-land of the identical (bench, workload,
+    /// subject, seed) collides by construction. A plain re-run refuses,
+    /// full stop — that's the append-only guarantee working. A *correction*
+    /// (`self.supersedes` is `Some`, naming the flawed file it replaces)
+    /// is expected to land the same day it was caught, so it may claim the
+    /// next free `-2`, `-3`, ... suffix instead of waiting for the date to
+    /// roll over.
     pub fn land(&self, results_dir: &Path) -> Result<PathBuf, LandError> {
-        let name = format!(
-            "{}--{}--{}--seed{}--{}.json",
+        let base = format!(
+            "{}--{}--{}--seed{}--{}",
             self.bench,
             sanitize(&self.workload.id),
             sanitize(&self.subject.label()),
             self.workload.seed,
             self.date,
         );
-        let path = results_dir.join(name);
-        if path.exists() {
-            return Err(LandError::AlreadyExists { path });
-        }
+        let first = results_dir.join(format!("{base}.json"));
+        let path = if !first.exists() {
+            first
+        } else if self.supersedes.is_some() {
+            (2..)
+                .map(|n| results_dir.join(format!("{base}-{n}.json")))
+                .find(|p| !p.exists())
+                .expect("integers are infinite")
+        } else {
+            return Err(LandError::AlreadyExists { path: first });
+        };
         std::fs::create_dir_all(results_dir)?;
         let json = serde_json::to_string_pretty(self)?;
         std::fs::write(&path, json + "\n")?;
@@ -179,6 +195,36 @@ mod tests {
         assert!(first.exists());
         let err = r.land(&dir).unwrap_err();
         assert!(matches!(err, LandError::AlreadyExists { .. }), "got: {err}");
+        std::fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn land_supersedes_claims_a_numbered_suffix_instead_of_overwriting() {
+        let dir = std::env::temp_dir().join(format!("kb-land-super-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        let flawed = record();
+        let flawed_path = flawed.land(&dir).expect("first landing");
+
+        let mut correction = record();
+        correction.supersedes = Some(format!(
+            "{}: contaminated by a concurrently running benchmark",
+            flawed_path.display()
+        ));
+        let corrected_path = correction.land(&dir).expect("superseding landing");
+
+        assert_ne!(flawed_path, corrected_path);
+        assert!(flawed_path.exists(), "the flawed record stays; append-only");
+        assert!(corrected_path.exists());
+        assert!(
+            corrected_path
+                .file_name()
+                .unwrap()
+                .to_str()
+                .unwrap()
+                .ends_with("-2.json"),
+            "got: {}",
+            corrected_path.display()
+        );
         std::fs::remove_dir_all(&dir).unwrap();
     }
 

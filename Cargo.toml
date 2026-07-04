@@ -23,3 +23,25 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sha2 = "0.11"
 thiserror = "2"
+# Parses `Cargo.lock` so `harness::locate_kyzo` can read the engine's
+# resolved git-pin commit from Cargo's own provenance record, never from a
+# neighboring working tree's `git status`.
+toml = "0.8"
+
+# SurrealDB's own performance docs (surrealdb.com/docs/learn/querying/
+# performance/performance-best-practices) name these flags explicitly and
+# warn they do not propagate from a dependency's own Cargo.toml — a
+# downstream crate that just adds `surrealdb` as a dependency gets plain
+# `cargo build --release` defaults unless it sets this itself. Applied at
+# the workspace level, not scoped to `opponents/surrealdb-runner` alone: it
+# is every Rust binary in this repo's own best-game release profile, not a
+# SurrealDB-only lever, so it cannot be read as tuned to flatter one
+# opponent. (`panic = "abort"` is deliberately omitted — SurrealDB's own
+# workspace uses it, but forcing it here would change unwind/panic
+# semantics for every subprocess-timed opponent in this repo's process
+# tree, a bigger blast radius than one perf knob justifies.)
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+strip = true

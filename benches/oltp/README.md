@@ -24,18 +24,25 @@ identical caps (12 GiB address space, 1800 s) as external processes, one connect
 SQLite runs WAL + `synchronous=NORMAL` (declared production config), built from the
 hash-verified 3.53.3 amalgamation by `opponents/sqlite/build.sh`.
 
-## Standings (this hardware; engine numbers are dev-tree indications until landed)
+## Standings (this hardware)
+
+KyzoDB numbers are commit `7447589`, clean tree, landed in `results/`. The load phase there uses
+the `$data`-param calling convention (`?[id,grp,val] <- $data :put …`) rather than an inlined
+literal list — the fair comparison against SQLite's own prepared-statement idiom, and ~2x the
+end-to-end load throughput of the literal form it replaced.
 
 | workload | subject | mixed ops/s | load rows/s | peak RSS | answer |
 |---|---|---|---|---|---|
-| r100k-o20k | SQLite 3.53.3 | 88,000 | 1.32 M | 8 MiB | `e1fbefaa…` |
-| r100k-o20k | KyzoDB @175b92a (dirty) | 34,900 | 179 k | 34 MiB | `e1fbefaa…` — identical |
-| r1m-o100k | SQLite 3.53.3 | 73,700 | 1.96 M | 9 MiB | `3bca7c63…` |
-| r1m-o100k | KyzoDB @175b92a (dirty) | 26,000 | 212 k | 220 MiB | `3bca7c63…` — identical |
+| r100k-o20k | SQLite 3.53.3 | 48,757 | 665,194 | 8.4 MiB | `e1fbefaa…` |
+| r100k-o20k | KyzoDB @7447589 | 53 | 272,509 | 190.7 MiB | `e1fbefaa…` — identical |
+| r1m-o100k | SQLite 3.53.3 | 36,648 | 866,310 | 52.7 MiB | `3bca7c63…` |
+| r1m-o100k | KyzoDB @7447589 | — | — | — | **times out**: mixed phase does not complete inside the 1800 s house cap, even on the warm-up iteration |
 
-The premium today: ~2.5–3x on mixed ops, ~7–9x on bulk load, with every one of the 100k answers
-byte-identical. SQLite baselines are landed in `results/`; KyzoDB numbers land when they can name
-a clean engine commit.
+Load is now within striking distance (2.4x, was 7-9x before the `$data` fix). Mixed ops are not:
+~920x slower at r100k-o20k and non-terminating at r1m-o100k. A prior bench-side report (closed as
+fixed alongside the load-path work) had measured the mixed-op premium at only ~2.5-3x on an earlier
+commit — this reads as a regression, not a remeasurement, and is filed as
+[kyzo#82](https://github.com/kyzodb/kyzo/issues/82). SQLite baselines are landed in `results/`.
 
 ## Run it
 

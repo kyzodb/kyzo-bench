@@ -15,6 +15,9 @@ use surrealdb::engine::local::RocksDb;
 use surrealdb::types::SurrealValue;
 use surrealdb::Surreal;
 
+mod graph_recursion_probe;
+mod vector;
+
 #[derive(Debug, SurrealValue)]
 struct Ping {
     ok: bool,
@@ -26,7 +29,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mode = args.next().ok_or("usage: surrealdb-runner <mode> [args...]")?;
     match mode.as_str() {
         "smoke-test" => smoke_test(&mut args).await,
-        other => Err(format!("unknown mode {other:?}; only smoke-test exists so far").into()),
+        "vector" => vector::run(&mut args).await,
+        other => Err(format!("unknown mode {other:?}; want smoke-test|vector").into()),
     }
 }
 
