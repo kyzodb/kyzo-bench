@@ -19,6 +19,35 @@ license = "Apache-2.0"
 repository = "https://github.com/kyzodb/kyzo-bench"
 
 [workspace.dependencies]
+# --------------------------------------------------------------------------
+# THE ENGINE PIN — the one place that bumps once per KyzoDB release.
+#
+# Every `kyzo-runner` crate depends on this via `kyzo.workspace = true`
+# (never a copy of the dependency line itself) so there is exactly one spot
+# to edit, not three kept in sync by hand. Pinned exactly the way every
+# opponent in this repo is pinned (`.claude/skills/add-opponent/SKILL.md`
+# gate 2): `harness::locate_kyzo` reads the resolved commit straight out of
+# this repo's own `Cargo.lock` (`source = "git+...?rev=...#<sha>"`), never
+# from a sibling working tree's `git status`.
+#
+# ON EACH ENGINE RELEASE, this one line changes:
+#   - pre-crates.io:  kyzo = { git = "https://github.com/kyzodb/kyzo", tag = "vX.Y.Z" }
+#   - post-crates.io: kyzo = "=X.Y.Z"
+# then `cargo update -p kyzo` to refresh `Cargo.lock`, re-run the headline
+# matrix, and land the results as `kyzo@vX.Y.Z` per `results/README.md`.
+# A `tag`/`=X.Y.Z` pin is self-documenting as a real release in the diff
+# that bumps it — unlike a `rev` sha, nobody has to look up what a `tag`
+# points to to know it is a shipped artifact.
+#
+# The 0.9.0 tag does not exist yet, so this is still a pre-release `rev`
+# pin — every `kyzo@<sha>` result today is engine-team feedback, not a
+# published comparison (`.claude/rules/methodology.md`). Do not "bump" this
+# `rev` to a newer dev commit as a substitute for waiting on the tag:
+# hand-picking which dev commit to benchmark while every opponent is frozen
+# at a released version is exactly the asymmetry the fairness rule exists
+# to prevent — the next edit to this line should be the `tag = "v0.9.0"`
+# swap above, not another sha.
+kyzo = { git = "https://github.com/kyzodb/kyzo", rev = "d2436cd8a0e142ac3b24b7bd7385aa649effb24e" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sha2 = "0.11"

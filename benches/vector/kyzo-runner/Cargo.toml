@@ -7,15 +7,10 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-# The engine under test, pinned exactly the way every opponent in this repo
-# is pinned (`.claude/skills/add-opponent/SKILL.md` gate 2): an exact
-# revision, resolved once into `Cargo.lock`, never a live sibling working
-# tree. `rev` names a commit on `kyzodb/kyzo` main; `harness::locate_kyzo`
-# reads the resolved 40-char sha straight out of `Cargo.lock`, so the pin's
-# identity can never drift from what was actually built. Pre-release only —
-# once the engine cuts its first tagged release this becomes
-# `kyzo = "=0.Y.Z"` from crates.io, the same shape as every other subject.
-kyzo = { git = "https://github.com/kyzodb/kyzo", rev = "d2436cd8a0e142ac3b24b7bd7385aa649effb24e" }
+# The engine under test. The pin itself lives in exactly one place, the
+# root `Cargo.toml`'s `[workspace.dependencies]` (see the comment there for
+# the release-bump procedure) — never a copy of the dependency line here.
+kyzo.workspace = true
 kyzo-bench-harness = { path = "../../../harness" }
 # Same ndarray line as kyzo-core, to hand query vectors across the API
 # boundary as DataValue::Vec without any text round-trip.
