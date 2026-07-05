@@ -108,11 +108,11 @@ fn parse_args() -> Result<Args, String> {
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let args = parse_args()?;
     let mut flat = FlatVectors::read(&args.flat)?;
-    if let Some(n) = args.n_cap {
-        if n < flat.n {
-            flat.train.truncate(n * flat.dim);
-            flat.n = n;
-        }
+    if let Some(n) = args.n_cap
+        && n < flat.n
+    {
+        flat.train.truncate(n * flat.dim);
+        flat.n = n;
     }
     eprintln!(
         "dataset: n={} dim={} q={} k_truth={}",
@@ -198,10 +198,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 let rows = db.run_script(&script, params)?;
                 let truth = &flat.neighbors[qi * flat.k_truth..qi * flat.k_truth + K];
                 for r in &rows.rows {
-                    if let DataValue::Num(Num::Int(id)) = &r[1] {
-                        if truth.contains(id) {
-                            pass_hits += 1;
-                        }
+                    if let DataValue::Num(Num::Int(id)) = &r[1]
+                        && truth.contains(id)
+                    {
+                        pass_hits += 1;
                     }
                 }
             }
