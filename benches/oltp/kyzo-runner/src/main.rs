@@ -198,17 +198,20 @@ fn phase_mixed(db: &Engine, args: &Args) -> Result<(), Box<dyn std::error::Error
 
 fn phase_dump(db: &Engine, args: &Args) -> Result<(), Box<dyn std::error::Error>> {
     let out_path = args.output.as_ref().ok_or("--output required for dump")?;
-    let rows = script(db, "?[id, grp, val] := *item{id, grp, val}")?;
-    // Ordered by key: the SQLite side pays for its ORDER BY inside the
-    // measured window, so the sort happens inside ours too.
-    let mut dumped: Vec<(i64, i64, i64)> = Vec::with_capacity(rows.rows.len());
-    for row in &rows.rows {
-        dumped.push((int(&row[0])?, int(&row[1])?, int(&row[2])?));
-    }
-    dumped.sort_unstable();
+    // Ordered by key through the engine's own `:order` query option, not a
+    // client-side `Vec::sort`: the SQLite side pays for its `ORDER BY`
+    // inside the measured window, so the engine's sort — not a hand-rolled
+    // one in the runner — has to pay for it here too.
+    let rows = script(db, "?[id, grp, val] := *item{id, grp, val} :order id")?;
     let mut out = BufWriter::new(std::fs::File::create(out_path)?);
-    for (id, grp, val) in dumped {
-        writeln!(out, "{id}\t{grp}\t{val}")?;
+    for row in &rows.rows {
+        writeln!(
+            out,
+            "{}\t{}\t{}",
+            int(&row[0])?,
+            int(&row[1])?,
+            int(&row[2])?
+        )?;
     }
     out.flush()?;
     Ok(())
