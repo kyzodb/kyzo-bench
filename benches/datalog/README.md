@@ -33,6 +33,13 @@ Souffle numbers are from the default 32-bit domain build (the first cut used the
 was re-measured — answer hashes were unaffected). KyzoDB numbers are commit `7447589`, clean tree,
 landed in `results/`.
 
+The load phase for the numbers below used inlined literal `:put` scripts (a fresh script string
+re-parsed per 5,000-row chunk). `kyzo-runner` has since switched to the `$data`-param calling
+convention (`?[...] <- $data :put ...`) the OLTP runner's own README already documents as ~2x
+end-to-end load throughput over the literal form — the same fix, applied here across
+`load_relation`'s arbitrary arity. Answer hashes are unaffected (verified against every landed
+record above); wall-clock numbers below predate the change and will shift on the next re-run.
+
 | workload | rows | Souffle 2.5 | Souffle compiled | KyzoDB @7447589 |
 |---|---|---|---|---|
 | tc/sparse-n2k-m6k | 3.5 M | 0.56 s / 78 MiB | 0.89 s | 9.0 s, 1.74 GiB — answer identical |

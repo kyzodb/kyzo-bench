@@ -145,17 +145,28 @@ fn load_relation(
         no_params.clone(),
     )?;
 
+    // `n`-independent script text: every chunk, regardless of size, reuses
+    // this exact string, so the engine parses it once per chunk instead of
+    // re-parsing `n` inlined row literals. Rows travel through the `$data`
+    // param instead — the same fix the OLTP runner's `PUT_PARAM_SCRIPT`
+    // applies (kyzo-core#74), generalized here to an arbitrary arity.
+    let put_param_script = format!("?[{head}] <- $data :put {name} {{{head}}}");
+
     let file = std::fs::File::open(facts_dir.join(format!("{name}.facts")))?;
-    let mut batch: Vec<String> = Vec::with_capacity(LOAD_CHUNK_ROWS);
-    let flush = |batch: &mut Vec<String>| -> Result<(), Box<dyn std::error::Error>> {
+    let mut batch: Vec<Vec<i64>> = Vec::with_capacity(LOAD_CHUNK_ROWS);
+    let flush = |batch: &mut Vec<Vec<i64>>| -> Result<(), Box<dyn std::error::Error>> {
         if batch.is_empty() {
             return Ok(());
         }
-        let script = format!(
-            "?[{head}] <- [{rows}] :put {name} {{{head}}}",
-            rows = batch.join(",")
+        let data = DataValue::List(
+            batch
+                .iter()
+                .map(|row| DataValue::List(row.iter().map(|v| DataValue::from(*v)).collect()))
+                .collect(),
         );
-        db.run_script(&script, no_params.clone())?;
+        let mut params = BTreeMap::new();
+        params.insert("data".to_string(), data);
+        db.run_script(&put_param_script, params)?;
         batch.clear();
         Ok(())
     };
@@ -173,11 +184,14 @@ fn load_relation(
             .into());
         }
         // Facts are integers; refuse anything else rather than guess.
+        let mut row = Vec::with_capacity(arity);
         for f in &fields {
-            f.parse::<i64>()
-                .map_err(|_| format!("non-integer fact value {f:?} in {name}.facts"))?;
+            row.push(
+                f.parse::<i64>()
+                    .map_err(|_| format!("non-integer fact value {f:?} in {name}.facts"))?,
+            );
         }
-        batch.push(format!("[{}]", fields.join(",")));
+        batch.push(row);
         if batch.len() == LOAD_CHUNK_ROWS {
             flush(&mut batch)?;
         }
