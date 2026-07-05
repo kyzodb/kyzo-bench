@@ -70,12 +70,25 @@ Same-parameter HNSW head-to-head: hnswlib is ~1.7–2.2x faster than FAISS's
 IndexHNSWFlat at equal recall on this host — a known ann-benchmarks result,
 reproduced not assumed.
 
-KyzoDB: does not complete. The build (M=16, efConstruction=200, same as above) OOMs under the
-house's 12 GiB address-space cap after ~12.5 minutes, failing on a single 8 GiB allocation — no
-recall/QPS curve to report. Filed as evidence on
-[kyzo#76](https://github.com/kyzodb/kyzo/issues/76), which independently tracks the same build
-tracked superlinear in build time (exponent ≈1.44 measured at n=1k-16k on `kyzo-bench`'s own
-build-time-vs-scale sweep, `--build-only`/`--n` flags on `kyzo-vector-runner`).
+KyzoDB: does not complete at this pin. The build (M=16, efConstruction=200, same as above) OOMs
+under the house's 12 GiB address-space cap after ~12.5 minutes, failing on a single 8 GiB
+allocation — no recall/QPS curve to report. Filed as evidence on
+[kyzo#76](https://github.com/kyzodb/kyzo/issues/76) alongside this bench's own build-time-vs-scale
+sweep (exponent ≈1.44 measured at n=1k-16k, `--build-only`/`--n` flags on `kyzo-vector-runner`),
+which tracked the same build as superlinear in build time.
+
+kyzo#76 has since closed upstream (commit `f280483`): two candidate mechanisms for the residual
+superlinearity were formed and tested directly, and per-insert search cost during `::hnsw` build
+is now a machine-checked, non-ignored law (`per_insert_search_cost_is_bounded_by_construction`,
+bounded above by `ef_construction × m_max0`) — the closing evidence is a decaying build-time
+exponent (1.63 → 1.22 across n=1k-32k) read as warm-up approaching that ceiling, not runaway
+growth. **That resolution does not by itself prove this bench's specific symptom (an 8 GiB single
+allocation failing at n=1,000,000) is gone**: the issue's own closing comment scopes the 1M-vector
+campaign as a separate, not-yet-run follow-up, and this bench has never re-measured against a
+build containing the fix. This standings row stays as the historical record of what the old pin
+produced; it is not evidence about the current engine either way. The honest next step is
+re-running this exact sweep once KyzoDB is pinned to a tagged release, not reading this paragraph
+as a resolution.
 
 ## Run it
 

@@ -31,11 +31,14 @@ flagged the mismatch and the import now uses raw `.mode ascii`.
 | Tantivy 0.26.1 | 25,400 | 0.72 s | 17 MiB | `34f1f8ef…` |
 | SQLite FTS5 3.53.3 | 3,300 | 0.67 s | 9 MiB | `34f1f8ef…` — identical |
 
-Records in `results/`. The KyzoDB side gates on the engine's FTS operator (landed in the
-engine tree, mid-integration); it enters the same rig, same corpus, same query set, same
-agreement gate — plus the composed queries (FTS inside joins/negation/recursion) that the
-standalone opponents cannot run, which will be published as KyzoDB-only with the workload
-spec open for any engine to enter.
+Records in `results/`. The engine's FTS operator (`::fts create`, `kyzo-core/src/engines/fts.rs`)
+is landed and wired as a first-class query-plan operator (`query/ra/search.rs`) — the gap is
+bench-side only: no `kyzo-runner` for this bench exists yet (`SUBJECTS` in `rig/src/main.rs`
+lists only `tantivy`/`fts5`). Onboarding it is the `add-opponent` process this repo already uses
+for every other subject: it enters the same rig, same corpus, same query set, same agreement
+gate — plus the composed queries (FTS inside joins/negation/recursion) that the standalone
+opponents cannot run, which will be published as KyzoDB-only with the workload spec open for any
+engine to enter.
 
 ## Run it
 
